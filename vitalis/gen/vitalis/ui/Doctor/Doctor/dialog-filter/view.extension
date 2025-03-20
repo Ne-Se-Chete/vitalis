@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/gen/vitalis/ui/Doctor/Doctor/dialog-filter/view.js",
+    "extensionPoint": "dialog-window",
+    "description": "vitalis - Application Dialog Window"
+}

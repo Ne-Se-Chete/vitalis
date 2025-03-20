@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/Settings/perspective.js",
-    "extensionPoint": "platform",
-    "description": "platform - Perspective - Settings"
-}

@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/gen/vitalis/ui/Patient/Patient/main-details/view.js",
+    "extensionPoint": "vitalis-view",
+    "description": "vitalis - Application View - Main Details"
+}

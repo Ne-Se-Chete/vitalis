@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/gen/vitalis/ui/Patient/perspective.js",
+    "extensionPoint": "vitalis",
+    "description": "vitalis - Perspective - Patient"
+}

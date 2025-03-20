@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/gen/vitalis/ui/launchpad/Home/view.js",
+    "extensionPoint": "vitalis-view",
+    "description": "vitalis - Application View"
+}
