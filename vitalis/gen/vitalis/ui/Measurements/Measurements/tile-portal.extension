@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/gen/vitalis/ui/Measurements/Measurements/tile.js",
+    "extensionPoint": "portal-tile",
+    "description": "vitalis - Application Tile"
+}

@@ -1,0 +1,167 @@
+{
+    "schema": {
+        "structures": [
+            {
+                "name": "PATIENT",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "PATIENT_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 255,
+                        "nullable": true,
+                        "name": "PATIENT_NAME"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 255,
+                        "name": "PATIENT_EMAIL"
+                    },
+                    {
+                        "type": "DATE",
+                        "nullable": true,
+                        "name": "PATIENT_BIRTHDATE"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "nullable": true,
+                        "name": "PATIENT_GENDER"
+                    }
+                ]
+            },
+            {
+                "name": "GENDER",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "GENDER_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 255,
+                        "nullable": true,
+                        "name": "GENDER_NAME"
+                    }
+                ]
+            },
+            {
+                "name": "DOCTOR",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "DOCTOR_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 255,
+                        "nullable": true,
+                        "name": "DOCTOR_NAME"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 255,
+                        "nullable": true,
+                        "name": "DOCTOR_EMAIL"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "nullable": true,
+                        "name": "DOCTOR_GENDER"
+                    }
+                ]
+            },
+            {
+                "name": "MEASUREMENTS",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "MEASUREMENTS_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "nullable": true,
+                        "name": "MEASUREMENTS_PATIENT"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "MEASUREMENTS_TIMESTAMP"
+                    },
+                    {
+                        "type": "DECIMAL",
+                        "nullable": true,
+                        "name": "MEASUREMENTS_LONGITUDE"
+                    },
+                    {
+                        "type": "DECIMAL",
+                        "nullable": true,
+                        "name": "MEASUREMENTS_LATITUDE"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 255,
+                        "nullable": true,
+                        "name": "MEASUREMENTS_ECG"
+                    },
+                    {
+                        "type": "DECIMAL",
+                        "nullable": true,
+                        "name": "MEASUREMENTS_BLOODOXIDATION"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "nullable": true,
+                        "name": "MEASUREMENTS_HARTRATE"
+                    }
+                ]
+            },
+            {
+                "name": "Patient_Gender",
+                "type": "foreignKey",
+                "table": "PATIENT",
+                "constraintName": "Patient_Gender",
+                "columns": "PATIENT_GENDER",
+                "referencedTable": "GENDER",
+                "referencedColumns": "GENDER_ID"
+            },
+            {
+                "name": "Doctor_Gender",
+                "type": "foreignKey",
+                "table": "DOCTOR",
+                "constraintName": "Doctor_Gender",
+                "columns": "DOCTOR_GENDER",
+                "referencedTable": "GENDER",
+                "referencedColumns": "GENDER_ID"
+            },
+            {
+                "name": "Measurements_Patient",
+                "type": "foreignKey",
+                "table": "MEASUREMENTS",
+                "constraintName": "Measurements_Patient",
+                "columns": "MEASUREMENTS_PATIENT",
+                "referencedTable": "PATIENT",
+                "referencedColumns": "PATIENT_ID"
+            }
+        ]
+    },
+    "datasource": "DefaultDB"
+}

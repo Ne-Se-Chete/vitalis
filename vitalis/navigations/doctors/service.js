@@ -3,7 +3,7 @@ const navigationData = {
     label: "Doctors",
     group: "main",
     order: 100,
-    link: "/services/web/vitalis/gen/vitalis/ui/purchaseinvoice/index.html?embedded"
+    link: "/services/web/vitalis/gen/vitalis/ui/Doctor/index.html?embedded"
 };
 
 function getNavigation() {

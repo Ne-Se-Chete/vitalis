@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/gen/vitalis/ui/Settings/Gender/dialog-filter/view.js",
+    "extensionPoint": "dialog-window",
+    "description": "vitalis - Application Dialog Window"
+}
