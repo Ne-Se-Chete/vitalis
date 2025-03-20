@@ -1,9 +1,9 @@
 const navigationData = {
     id: 'measurement-navigation',
-    label: "Measurement",
+    label: "Measurements",
     group: "main",
     order: 100,
-    link: "/services/web/vitalis/gen/vitalis/ui/Measurement/index.html?embedded"
+    link: "/services/web/vitalis/gen/vitalis/ui/Measurements/index.html?embedded"
 };
 
 function getNavigation() {
