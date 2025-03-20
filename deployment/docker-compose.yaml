@@ -68,7 +68,7 @@ services:
     environment:
       DIRIGIBLE_MULTI_TENANT_MODE: "false"
       SPRING_PROFILES_ACTIVE: keycloak
-      DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080/realms/ne-se-chete
+      DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: http://localhost/realms/ne-se-chete
       DIRIGIBLE_KEYCLOAK_CLIENT_ID: vitalis
       DIRIGIBLE_KEYCLOAK_CLIENT_SECRET: ${BACKEND_CLIENT_SECRET}
       DIRIGIBLE_TRIAL_ENABLED: "true"
