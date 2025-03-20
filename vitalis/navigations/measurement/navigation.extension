@@ -1,5 +1,0 @@
-{
-    "extensionPoint": "dashboard-navigations",
-    "module": "vitalis/navigations/measurement/service.js",
-    "description": "Measurement Navigation"
-}
