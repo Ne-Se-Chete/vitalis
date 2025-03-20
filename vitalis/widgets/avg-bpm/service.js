@@ -1,8 +1,9 @@
 const widgetData = {
-    id: 'gps-map-widget',
-    label: 'GPS Widget',
+    id: 'avg-bpm-widget',
+    label: 'Average Hart Rate BPM Widget',
     link: '/services/web/vitalis/widgets/gps-map/index.html',
-    size: "medium"
+    // redirectViewId: 'purchase-invoice-navigation',
+    size: "small"
 };
 
 export function getWidget() {
