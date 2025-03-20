@@ -1,0 +1,4 @@
+{
+    "name": "platform-tile",
+    "description": "platform - Extension Point for the Application Tile Providers"
+}

@@ -1,0 +1,5 @@
+{
+    "module": "platform/gen/platform/ui/Measurements/Measurements/view.js",
+    "extensionPoint": "platform-view",
+    "description": "platform - Application View"
+}

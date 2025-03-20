@@ -1,0 +1,5 @@
+{
+    "module": "platform/gen/platform/ui/Measurements/Measurements/tile.js",
+    "extensionPoint": "portal-tile",
+    "description": "platform - Application Tile"
+}

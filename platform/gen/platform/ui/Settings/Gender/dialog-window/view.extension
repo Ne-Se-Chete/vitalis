@@ -1,0 +1,5 @@
+{
+    "module": "platform/gen/platform/ui/Settings/Gender/dialog-window/view.js",
+    "extensionPoint": "dialog-window",
+    "description": "platform - Application Dialog Window"
+}

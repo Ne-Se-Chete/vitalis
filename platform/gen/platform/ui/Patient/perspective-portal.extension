@@ -1,0 +1,5 @@
+{
+    "module": "platform/gen/platform/ui/Patient/perspective.js",
+    "extensionPoint": "portal",
+    "description": "platform - Perspective - Patient"
+}

@@ -1,0 +1,5 @@
+{
+    "module": "platform/gen/platform/ui/Patient/Patient/main-details/view.js",
+    "extensionPoint": "platform-view",
+    "description": "platform - Application View - Main Details"
+}

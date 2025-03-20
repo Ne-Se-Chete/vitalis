@@ -1,0 +1,5 @@
+{
+    "module": "platform/gen/platform/ui/Doctor/perspective.js",
+    "extensionPoint": "platform",
+    "description": "platform - Perspective - Doctor"
+}

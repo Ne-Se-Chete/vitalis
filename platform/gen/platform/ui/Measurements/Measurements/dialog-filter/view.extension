@@ -1,0 +1,5 @@
+{
+    "module": "platform/gen/platform/ui/Measurements/Measurements/dialog-filter/view.js",
+    "extensionPoint": "dialog-window",
+    "description": "platform - Application Dialog Window"
+}
