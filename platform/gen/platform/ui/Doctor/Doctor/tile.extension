@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/Doctor/Doctor/tile.js",
-    "extensionPoint": "platform-tile",
-    "description": "platform - Application Tile"
-}

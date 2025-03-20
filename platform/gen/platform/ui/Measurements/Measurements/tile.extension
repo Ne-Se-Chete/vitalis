@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/Measurements/Measurements/tile.js",
-    "extensionPoint": "platform-tile",
-    "description": "platform - Application Tile"
-}

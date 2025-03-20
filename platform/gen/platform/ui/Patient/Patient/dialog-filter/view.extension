@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/Patient/Patient/dialog-filter/view.js",
-    "extensionPoint": "dialog-window",
-    "description": "platform - Application Dialog Window"
-}
