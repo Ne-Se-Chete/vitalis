@@ -53,11 +53,8 @@ services:
       KC_DB_SCHEME: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_URL: http://localhost:8081
     ports:
-      - "8081:8080"
+      - "8080:8080"
     depends_on:
       keycloak-db:
         condition: service_healthy
