@@ -82,8 +82,6 @@ services:
       - "8080:8080"
     depends_on:
       - keycloak
-      vitalis-db:
-        condition: service_healthy
     networks:
       - shared_network
 
