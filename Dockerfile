@@ -1,6 +1,6 @@
 FROM dirigiblelabs/dirigible:latest
 
-COPY platform target/dirigible/repository/root/registry/public/platform
+COPY platform target/dirigible/repository/root/registry/public/vitalis
 
 ENV DIRIGIBLE_HOME_URL=/services/web/portal/dashboard.html
 
