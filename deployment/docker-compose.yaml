@@ -54,13 +54,20 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HOSTNAME: localhost
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_URL: http://localhost:8081
     ports:
-      - "80:8080"
+      - "8081:8080"
     depends_on:
       keycloak-db:
         condition: service_healthy
     networks:
       - shared_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   vitalis:
     image: ghcr.io/ne-se-chete/vitalis:latest
@@ -68,7 +75,7 @@ services:
     environment:
       DIRIGIBLE_MULTI_TENANT_MODE: "false"
       SPRING_PROFILES_ACTIVE: keycloak
-      DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: https://keycloak:8080/realms/ne-se-chete
+      DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: http://localhost:8081/realms/ne-se-chete
       DIRIGIBLE_KEYCLOAK_CLIENT_ID: vitalis
       DIRIGIBLE_KEYCLOAK_CLIENT_SECRET: ${BACKEND_CLIENT_SECRET}
       DIRIGIBLE_TRIAL_ENABLED: "true"
@@ -79,9 +86,10 @@ services:
       PostgreSQL_PASSWORD: vitalis
       DIRIGIBLE_DATABASE_DATASOURCE_NAME_DEFAULT: PostgreSQL
     ports:
-      - "8080:8080"
+      - "80:8080"
     depends_on:
-      - keycloak
+      keycloak:
+        condition: service_healthy
     networks:
       - shared_network
 
