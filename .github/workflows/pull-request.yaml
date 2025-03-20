@@ -36,14 +36,6 @@ jobs:
               exit 1
           fi
 
-      - name: Install Dependencies
-        run: |
-          cd ./vitalis
-          echo "@codbex:registry=https://npm.pkg.github.com
-          //npm.pkg.github.com/:_authToken=${{ secrets.DOCKER_PASSWORD }}" > .npmrc
-          npm install
-          rm -rf .npmrc
-
       - name: Initialize Buildx
         run: |
           docker buildx create --name builder || true
