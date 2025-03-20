@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/Doctor/Doctor/main-details/view.js",
-    "extensionPoint": "platform-view",
-    "description": "platform - Application View - Main Details"
-}

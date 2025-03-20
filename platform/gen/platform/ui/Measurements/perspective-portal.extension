@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/Measurements/perspective.js",
-    "extensionPoint": "portal",
-    "description": "platform - Perspective - Measurements"
-}

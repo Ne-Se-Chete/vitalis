@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/Patient/Patient/tile.js",
-    "extensionPoint": "portal-tile",
-    "description": "platform - Application Tile"
-}

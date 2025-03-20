@@ -1,5 +1,0 @@
-{
-    "module": "platform/gen/platform/ui/launchpad/menu-help.js",
-    "extensionPoint": "platform-menu",
-    "description": "platform - Application Menu"
-}

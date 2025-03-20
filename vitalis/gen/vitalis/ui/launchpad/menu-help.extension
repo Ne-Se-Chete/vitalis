@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/gen/vitalis/ui/launchpad/menu-help.js",
+    "extensionPoint": "vitalis-menu",
+    "description": "vitalis - Application Menu"
+}

@@ -1,0 +1,5 @@
+{
+    "module": "/vitalis/navigation-groups/main/service.js",
+    "extensionPoint": "dashboard-navigation-groups",
+    "description": "Main Group"
+}
