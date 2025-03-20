@@ -1,0 +1,42 @@
+services:
+  vitalis:
+    image: postgres:latest
+    container_name: vitalis_db
+    environment:
+      POSTGRES_DB: vitalis
+      POSTGRES_USER: vitalis
+      POSTGRES_PASSWORD: vitalis
+    volumes:
+      - vitalis_db_data:/var/lib/postgresql/data
+    networks:
+      - shared_network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "vitalis"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pi-bank:
+    image: ghcr.io/ne-se-chete/vitalis:latest
+    container_name: vitalis
+    environment:
+      DIRIGIBLE_MULTI_TENANT_MODE: "false"
+      DIRIGIBLE_TRIAL_ENABLED: "true"
+      DIRIGIBLE_DATABASE_CUSTOM_DATASOURCES: PostgreSQL
+      PostgreSQL_DRIVER: org.postgresql.Driver
+      PostgreSQL_URL: jdbc:postgresql://vitalis-db:5432/dirigible
+      PostgreSQL_USERNAME: vitalis
+      PostgreSQL_PASSWORD: vitalis
+      DIRIGIBLE_DATABASE_DATASOURCE_NAME_DEFAULT: PostgreSQL
+    ports:
+      - "8080:8080"
+    networks:
+      - shared_network
+
+volumes:
+  vitalis_db_data:
+    driver: local
+
+networks:
+  shared_network:
+    driver: bridge
