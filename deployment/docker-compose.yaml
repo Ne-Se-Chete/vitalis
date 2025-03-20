@@ -1,5 +1,5 @@
 services:
-  vitalis:
+  vitalis_db:
     image: postgres:latest
     container_name: vitalis_db
     environment:
@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 5
 
-  pi-bank:
+  vitalis:
     image: ghcr.io/ne-se-chete/vitalis:latest
     container_name: vitalis
     environment:
