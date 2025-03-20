@@ -65,6 +65,7 @@ services:
     image: ghcr.io/ne-se-chete/vitalis:latest
     container_name: vitalis
     environment:
+      DIRIGIBLE_HOST: http://localhost
       DIRIGIBLE_MULTI_TENANT_MODE: "false"
       SPRING_PROFILES_ACTIVE: keycloak
       DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: http://localhost:8080/realms/ne-se-chete
