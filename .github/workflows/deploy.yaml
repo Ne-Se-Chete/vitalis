@@ -1,0 +1,33 @@
+name: Deploy - Vitalis
+
+on:
+  workflow_run:
+    workflows: Build - Vitalis
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Kubernetes
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Create .kube directory
+        run: mkdir -p $HOME/.kube
+
+      - name: Authenticate with Kubernetes
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl scale deployment/vitalis --replicas=0 -n prod
+          kubectl apply -f deployment/vitalis.yaml
