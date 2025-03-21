@@ -1,0 +1,293 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vitalis
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak-db
+  namespace: vitalis
+spec:
+  serviceName: keycloak-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-db
+  template:
+    metadata:
+      labels:
+        app: keycloak-db
+    spec:
+      initContainers:
+        - name: cleanup-lost-found
+          image: busybox
+          command:
+            ["sh", "-c", "rm -rf /var/lib/postgresql/data/pgdata/lost+found"]
+          volumeMounts:
+            - name: keycloak-db-storage
+              mountPath: /var/lib/postgresql/data/pgdata
+      containers:
+        - name: postgres
+          image: postgres:latest
+          args: ["-c", "max_connections=200"]
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: keycloak
+            - name: POSTGRES_USER
+              value: keycloak
+            - name: POSTGRES_PASSWORD
+              value: keycloak
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: keycloak-db-storage
+              mountPath: /var/lib/postgresql/data/pgdata
+  volumeClaimTemplates:
+    - metadata:
+        name: keycloak-db-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-db
+  namespace: vitalis
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: keycloak-db
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vitalis-db
+  namespace: vitalis
+spec:
+  serviceName: vitalis-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vitalis-db
+  template:
+    metadata:
+      labels:
+        app: vitalis-db
+    spec:
+      initContainers:
+        - name: cleanup-lost-found
+          image: busybox
+          command:
+            ["sh", "-c", "rm -rf /var/lib/postgresql/data/pgdata/lost+found"]
+          volumeMounts:
+            - name: vitalis-db-storage
+              mountPath: /var/lib/postgresql/data/pgdata
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: vitalis
+            - name: POSTGRES_USER
+              value: vitalis
+            - name: POSTGRES_PASSWORD
+              value: vitalis
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: vitalis-db-storage
+              mountPath: /var/lib/postgresql/data/pgdata
+  volumeClaimTemplates:
+    - metadata:
+        name: vitalis-db-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vitalis-db
+  namespace: vitalis
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: vitalis-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: vitalis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:latest
+          args: ["start-dev"]
+          env:
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL
+              value: jdbc:postgresql://keycloak-db.vitalis.svc.cluster.local:5432/keycloak
+            - name: KC_DB_USERNAME
+              value: keycloak
+            - name: KC_DB_PASSWORD
+              value: keycloak
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+            - name: KC_HOSTNAME
+              value: https://keycloak.vitalis.nesechete.com
+            - name: KC_PROXY
+              value: edge
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: vitalis
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vitalis
+  namespace: vitalis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vitalis
+  template:
+    metadata:
+      labels:
+        app: vitalis
+    spec:
+      containers:
+        - name: vitalis
+          image: ghcr.io/ne-se-chete/vitalis:latest
+          env:
+            - name: DIRIGIBLE_MULTI_TENANT_MODE
+              value: "false"
+            - name: SPRING_PROFILES_ACTIVE
+              value: keycloak
+            - name: DIRIGIBLE_HOST
+              value: https://app.vitalis.nesechete.com
+            - name: DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL
+              value: https://keycloak.vitalis.nesechete.com/realms/nesechete
+            - name: DIRIGIBLE_KEYCLOAK_CLIENT_ID
+              value: vitalis
+            - name: DIRIGIBLE_KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: vitalis-backend-secret
+                  key: BACKEND_CLIENT_SECRET
+            - name: DIRIGIBLE_TRIAL_ENABLED
+              value: "true"
+            - name: DIRIGIBLE_DATABASE_CUSTOM_DATASOURCES
+              value: PostgreSQL
+            - name: PostgreSQL_DRIVER
+              value: org.postgresql.Driver
+            - name: PostgreSQL_URL
+              value: jdbc:postgresql://vitalis-db.vitalis.svc.cluster.local:5432/vitalis
+            - name: PostgreSQL_USERNAME
+              value: vitalis
+            - name: PostgreSQL_PASSWORD
+              value: vitalis
+            - name: DIRIGIBLE_DATABASE_DATASOURCE_NAME_DEFAULT
+              value: PostgreSQL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vitalis
+  namespace: vitalis
+spec:
+  selector:
+    app: vitalis
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  namespace: vitalis
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - keycloak.vitalis.nesechete.com
+      secretName: keycloak-tls
+  rules:
+    - host: keycloak.vitalis.nesechete.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vitalis-ingress
+  namespace: vitalis
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - app.vitalis.nesechete.com
+      secretName: app.vitalis-tls
+  rules:
+    - host: app.vitalis.nesechete.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vitalis
+                port:
+                  number: 80
