@@ -32,6 +32,11 @@
                         "type": "INTEGER",
                         "nullable": true,
                         "name": "PATIENT_GENDER"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "nullable": true,
+                        "name": "PATIENT_DOCTOR"
                     }
                 ]
             },
@@ -129,7 +134,60 @@
                     {
                         "type": "INTEGER",
                         "nullable": true,
-                        "name": "MEASUREMENTS_HARTRATE"
+                        "name": "MEASUREMENTS_HEARTRATE"
+                    }
+                ]
+            },
+            {
+                "name": "REQUESTS",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "REQUESTS_ID"
+                    },
+                    {
+                        "type": "DATE",
+                        "nullable": true,
+                        "name": "REQUESTS_DATE"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "nullable": true,
+                        "name": "REQUESTS_STATUS"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "nullable": true,
+                        "name": "REQUESTS_MEASUREMENTS"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 555,
+                        "nullable": true,
+                        "name": "REQUESTS_DESCRIPTION"
+                    }
+                ]
+            },
+            {
+                "name": "REQUESTSTATUS",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "REQUESTSTATUS_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 255,
+                        "nullable": true,
+                        "name": "REQUESTSTATUS_NAME"
                     }
                 ]
             },
@@ -141,6 +199,15 @@
                 "columns": "PATIENT_GENDER",
                 "referencedTable": "GENDER",
                 "referencedColumns": "GENDER_ID"
+            },
+            {
+                "name": "Patient_Doctor",
+                "type": "foreignKey",
+                "table": "PATIENT",
+                "constraintName": "Patient_Doctor",
+                "columns": "PATIENT_DOCTOR",
+                "referencedTable": "DOCTOR",
+                "referencedColumns": "DOCTOR_ID"
             },
             {
                 "name": "Doctor_Gender",
@@ -159,6 +226,24 @@
                 "columns": "MEASUREMENTS_PATIENT",
                 "referencedTable": "PATIENT",
                 "referencedColumns": "PATIENT_ID"
+            },
+            {
+                "name": "Requests_RequestStatus",
+                "type": "foreignKey",
+                "table": "REQUESTS",
+                "constraintName": "Requests_RequestStatus",
+                "columns": "REQUESTS_STATUS",
+                "referencedTable": "REQUESTSTATUS",
+                "referencedColumns": "REQUESTSTATUS_ID"
+            },
+            {
+                "name": "Requests_Measurements",
+                "type": "foreignKey",
+                "table": "REQUESTS",
+                "constraintName": "Requests_Measurements",
+                "columns": "REQUESTS_MEASUREMENTS",
+                "referencedTable": "MEASUREMENTS",
+                "referencedColumns": "MEASUREMENTS_ID"
             }
         ]
     },
