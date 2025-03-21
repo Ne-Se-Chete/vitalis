@@ -67,8 +67,8 @@ angular.module('page', ["ideUI", "ideView"])
 			if (entity.BloodOxidation !== undefined) {
 				filter.$filter.equals.BloodOxidation = entity.BloodOxidation;
 			}
-			if (entity.HartRate !== undefined) {
-				filter.$filter.equals.HartRate = entity.HartRate;
+			if (entity.HeartRate !== undefined) {
+				filter.$filter.equals.HeartRate = entity.HeartRate;
 			}
 			messageHub.postMessage("entitySearch", {
 				entity: entity,

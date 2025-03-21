@@ -1,0 +1,75 @@
+body {
+    background-color: #1a1a1a;
+    /* Darker shade for a cleaner look */
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    color: #d1e8ff;
+}
+
+h2 {
+    color: #d1e8ff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+div {
+    padding: 20px;
+    margin: 20px auto;
+    width: 60%;
+    max-width: 600px;
+    /* Prevents it from getting too wide */
+    background-color: #354a5f;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Adds depth */
+}
+
+textarea {
+    width: calc(100% - 20px);
+    height: 120px;
+    background-color: #2c3e50;
+    color: #ffd700;
+    /* Softer yellow */
+    border: 2px solid #e74c3c;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+}
+
+textarea::placeholder {
+    color: #ccc;
+}
+
+button {
+    background-color: #ffd700;
+    color: #1a1a1a;
+    padding: 12px 24px;
+    margin: 15px 5px;
+    border: 2px solid #e74c3c;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #e74c3c;
+    color: #ffd700;
+    transform: scale(1.05);
+    /* Slight zoom effect */
+}
+
+label {
+    display: block;
+    font-size: 18px;
+    margin: 15px 0 5px;
+}
+
+p {
+    font-size: 16px;
+    margin: 5px 0;
+}

@@ -21,6 +21,7 @@ angular.module('page', ["ideUI", "ideView"])
 			$scope.selectedMainEntityKey = params.selectedMainEntityKey;
 			$scope.selectedMainEntityId = params.selectedMainEntityId;
 			$scope.optionsGender = params.optionsGender;
+			$scope.optionsDoctor = params.optionsDoctor;
 		}
 
 		$scope.filter = function () {
@@ -60,6 +61,9 @@ angular.module('page', ["ideUI", "ideView"])
 			}
 			if (entity.Gender !== undefined) {
 				filter.$filter.equals.Gender = entity.Gender;
+			}
+			if (entity.Doctor !== undefined) {
+				filter.$filter.equals.Doctor = entity.Doctor;
 			}
 			messageHub.postMessage("entitySearch", {
 				entity: entity,

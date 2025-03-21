@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="templateApp" ng-controller="templateController">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" sizes="any" href="data:;base64,iVBORw0KGgo=">
+        <title>Measurement Review</title>
+        <theme></theme>
+        <script type="text/javascript" src="/services/js/resources-core/services/loader.js?id=application-view-js"></script>
+        <link type="text/css" rel="stylesheet" href="/services/js/resources-core/services/loader.js?id=application-view-css" />
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="controller.js"></script>
+    </head>
+
+    <body>
+        <div ng-if="showDialog">
+            <h2>Measurement Review</h2>
+            <div>
+                <p><strong>Patient:</strong> {{ measurementsData.Patient }}</p>
+                <p><strong>Timestamp:</strong> {{ measurementsData.Timestamp }}</p>
+                <p><strong>ECG:</strong> {{ measurementsData.ECG }}</p>
+                <p><strong>Blood Oxygen:</strong> {{ measurementsData.BloodOxygen }}</p>
+                <p><strong>Heart Rate:</strong> {{ measurementsData.HeartRate }}</p>
+            </div>
+
+            <label for="description">Doctor's Description:</label>
+            <textarea id="description" ng-model="description"></textarea>
+
+            <button ng-click="submitRequest(1)">Request Further Review</button>
+            <button ng-click="submitRequest(2)">Clear Report</button>
+        </div>
+    </body>
+
+</html>

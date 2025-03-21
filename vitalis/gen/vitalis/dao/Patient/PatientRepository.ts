@@ -10,6 +10,7 @@ export interface PatientEntity {
     Email: string;
     Birthdate?: Date;
     Gender?: number;
+    Doctor?: number;
 }
 
 export interface PatientCreateEntity {
@@ -17,6 +18,7 @@ export interface PatientCreateEntity {
     readonly Email: string;
     readonly Birthdate?: Date;
     readonly Gender?: number;
+    readonly Doctor?: number;
 }
 
 export interface PatientUpdateEntity extends PatientCreateEntity {
@@ -31,6 +33,7 @@ export interface PatientEntityOptions {
             Email?: string | string[];
             Birthdate?: Date | Date[];
             Gender?: number | number[];
+            Doctor?: number | number[];
         };
         notEquals?: {
             Id?: number | number[];
@@ -38,6 +41,7 @@ export interface PatientEntityOptions {
             Email?: string | string[];
             Birthdate?: Date | Date[];
             Gender?: number | number[];
+            Doctor?: number | number[];
         };
         contains?: {
             Id?: number;
@@ -45,6 +49,7 @@ export interface PatientEntityOptions {
             Email?: string;
             Birthdate?: Date;
             Gender?: number;
+            Doctor?: number;
         };
         greaterThan?: {
             Id?: number;
@@ -52,6 +57,7 @@ export interface PatientEntityOptions {
             Email?: string;
             Birthdate?: Date;
             Gender?: number;
+            Doctor?: number;
         };
         greaterThanOrEqual?: {
             Id?: number;
@@ -59,6 +65,7 @@ export interface PatientEntityOptions {
             Email?: string;
             Birthdate?: Date;
             Gender?: number;
+            Doctor?: number;
         };
         lessThan?: {
             Id?: number;
@@ -66,6 +73,7 @@ export interface PatientEntityOptions {
             Email?: string;
             Birthdate?: Date;
             Gender?: number;
+            Doctor?: number;
         };
         lessThanOrEqual?: {
             Id?: number;
@@ -73,6 +81,7 @@ export interface PatientEntityOptions {
             Email?: string;
             Birthdate?: Date;
             Gender?: number;
+            Doctor?: number;
         };
     },
     $select?: (keyof PatientEntity)[],
@@ -128,6 +137,11 @@ export class PatientRepository {
             {
                 name: "Gender",
                 column: "PATIENT_GENDER",
+                type: "INTEGER",
+            },
+            {
+                name: "Doctor",
+                column: "PATIENT_DOCTOR",
                 type: "INTEGER",
             }
         ]

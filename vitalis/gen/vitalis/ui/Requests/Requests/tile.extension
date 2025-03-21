@@ -1,0 +1,6 @@
+{
+    "module": "vitalis/gen/vitalis/ui/Requests/Requests/tile.js",
+    "extensionPoint": "vitalis-tile",
+    "description": "vitalis - Application Tile",
+    "role": "Requests,"
+}

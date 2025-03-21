@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef" exporter="Flowable Open Source Modeler" exporterVersion="6.8.1">
+  <process id="approve-request" name="Approve Request" isExecutable="true">
+    <startEvent id="start-event"/>
+    <serviceTask id="notify-approvers" name="Notify Approvers" flowable:async="true" flowable:delegateExpression="${JSTask}">
+      <extensionElements>
+        <flowable:field name="handler">
+          <flowable:string><![CDATA[vitalis/tasks/notify-approvers.ts]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4" sourceRef="start-event" targetRef="notify-approvers"/>
+    <endEvent id="end-event"/>
+    <userTask id="process-request" name="Process Request" flowable:async="true"/>
+    <sequenceFlow id="sid-BF4CCD7E-3193-4FB1-9886-DD939A7966F0" sourceRef="notify-approvers" targetRef="process-request"/>
+    <exclusiveGateway id="sid-EE58968B-570E-451E-AC5C-71DAFBB9670A" flowable:async="true" default="sid-11B901A1-ADD6-4573-83EF-A286E43F072A"/>
+    <sequenceFlow id="sid-FC7F7B6B-C8A9-4FB2-9B1B-0137DD4B1485" sourceRef="process-request" targetRef="sid-EE58968B-570E-451E-AC5C-71DAFBB9670A"/>
+    <serviceTask id="further-review" name="Further Review" flowable:async="true" flowable:delegateExpression="${JSTask}">
+      <extensionElements>
+        <flowable:field name="handler">
+          <flowable:string><![CDATA[vitalis/tasks/further-review.ts]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="clear-report" name="Clear Report" flowable:async="true" flowable:delegateExpression="${JSTask}">
+      <extensionElements>
+        <flowable:field name="handler">
+          <flowable:string><![CDATA[vitalis/tasks/clear-report.ts]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-9DC9E2D7-E9B5-40B1-B58F-4249386F47C4" sourceRef="sid-EE58968B-570E-451E-AC5C-71DAFBB9670A" targetRef="further-review">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${RequestApproved}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-11B901A1-ADD6-4573-83EF-A286E43F072A" sourceRef="sid-EE58968B-570E-451E-AC5C-71DAFBB9670A" targetRef="clear-report"/>
+    <sequenceFlow id="sid-61846743-9979-4555-91BB-EC952C20BDCC" sourceRef="further-review" targetRef="end-event"/>
+    <sequenceFlow id="sid-FA9542EB-EC5D-4A64-9E31-CC2481979749" sourceRef="clear-report" targetRef="end-event"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_approve-request">
+    <bpmndi:BPMNPlane bpmnElement="approve-request" id="BPMNPlane_approve-request">
+      <bpmndi:BPMNShape bpmnElement="start-event" id="BPMNShape_start-event">
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="78.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="notify-approvers" id="BPMNShape_notify-approvers">
+        <omgdc:Bounds height="80.0" width="100.0" x="165.0" y="53.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end-event" id="BPMNShape_end-event">
+        <omgdc:Bounds height="28.0" width="28.0" x="660.0" y="197.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="process-request" id="BPMNShape_process-request">
+        <omgdc:Bounds height="80.0" width="100.0" x="300.0" y="53.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-EE58968B-570E-451E-AC5C-71DAFBB9670A" id="BPMNShape_sid-EE58968B-570E-451E-AC5C-71DAFBB9670A">
+        <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="191.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="further-review" id="BPMNShape_further-review">
+        <omgdc:Bounds height="80.0" width="100.0" x="480.0" y="107.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="clear-report" id="BPMNShape_clear-report">
+        <omgdc:Bounds height="80.0" width="100.0" x="480.0" y="220.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4" id="BPMNEdge_sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="119.94999848995758" y="93.0"/>
+        <omgdi:waypoint x="165.0" y="93.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9DC9E2D7-E9B5-40B1-B58F-4249386F47C4" id="BPMNEdge_sid-9DC9E2D7-E9B5-40B1-B58F-4249386F47C4" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="365.17633196721306" y="206.21311475409837"/>
+        <omgdi:waypoint x="480.0" y="164.9486072423398"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-61846743-9979-4555-91BB-EC952C20BDCC" id="BPMNEdge_sid-61846743-9979-4555-91BB-EC952C20BDCC" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="579.95" y="169.20000000000002"/>
+        <omgdi:waypoint x="661.1940639427606" y="205.3126435735719"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-BF4CCD7E-3193-4FB1-9886-DD939A7966F0" id="BPMNEdge_sid-BF4CCD7E-3193-4FB1-9886-DD939A7966F0" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="264.95000000000005" y="93.0"/>
+        <omgdi:waypoint x="300.0" y="93.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-FC7F7B6B-C8A9-4FB2-9B1B-0137DD4B1485" id="BPMNEdge_sid-FC7F7B6B-C8A9-4FB2-9B1B-0137DD4B1485" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="350.0" y="132.95"/>
+        <omgdi:waypoint x="350.0" y="191.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-FA9542EB-EC5D-4A64-9E31-CC2481979749" id="BPMNEdge_sid-FA9542EB-EC5D-4A64-9E31-CC2481979749" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="579.95" y="242.98611111111111"/>
+        <omgdi:waypoint x="660.7426987045569" y="215.49505372055964"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-11B901A1-ADD6-4573-83EF-A286E43F072A" id="BPMNEdge_sid-11B901A1-ADD6-4573-83EF-A286E43F072A" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="365.4165826391933" y="215.53103070175436"/>
+        <omgdi:waypoint x="479.9999999999999" y="246.49025069637884"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
