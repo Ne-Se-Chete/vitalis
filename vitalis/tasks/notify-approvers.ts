@@ -7,7 +7,7 @@ const executionId = execution.getId();
 const toWho = process.getVariable(executionId, "To");
 let approvalLink = process.getVariable(executionId, "ApprovalLink");
 
-const subject = "New leave request";
+const subject = "New diagnosis request";
 
 // Getting the process id. Will change if more parameters are parsed when starting the process
 const processId = parseInt(executionId) - 4;

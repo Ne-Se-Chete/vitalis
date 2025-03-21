@@ -15,7 +15,7 @@ export const trigger = (event) => {
         const protocol = request.getScheme() + "://";
         const domain = request.getHeader("Host")
 
-        const approvalLink = `${protocol}${domain}/services/web/vitalis/ext/generate/RequestDeduction/request-deduction-generate.html?measurementsId=${measurements.Id}&processId=`;
+        const approvalLink = `${protocol}${domain}/services/web/vitalis/ext/generate/RequestDeduction/index.html?measurementsId=${measurements.Id}&processId=`;
 
         const patient = patientDao.findById(measurements.Patient);
         const doctor = doctorDao.findById(patient.Doctor);

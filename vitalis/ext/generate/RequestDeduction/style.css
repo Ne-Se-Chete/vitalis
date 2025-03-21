@@ -1,0 +1,45 @@
+body {
+    background-color: black;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    color: #d1e8ff;
+}
+
+h2 {
+    color: #d1e8ff;
+}
+
+div {
+    padding: 20px;
+    margin: 20px auto;
+    width: 50%;
+    background-color: #354a5f;
+    border-radius: 10px;
+}
+
+textarea {
+    width: 80%;
+    height: 100px;
+    background-color: #f2f2f2;
+    color: yellow;
+    border: 2px solid red;
+    padding: 5px;
+    font-size: 16px;
+}
+
+button {
+    background-color: yellow;
+    color: black;
+    padding: 10px 20px;
+    margin: 10px;
+    border: 2px solid red;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: red;
+    color: yellow;
+}

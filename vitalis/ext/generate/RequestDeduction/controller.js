@@ -13,19 +13,19 @@ app.controller('templateController', ['$scope', '$http', 'ViewParameters', 'mess
 
     const measurementsUrl = "/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRquestDeductionService.ts/measurementsData/" + measurementsId;
     const requestUrl = "/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRquestDeductionService.ts/request/"
-    const approvedUrl = `/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRquestDeductionService.ts/requests/${processId}/approve`;
-    const deniedUrl = `/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRquestDeductionService.ts/requests/${processId}/deny`;
+    const approvedUrl = `${requestUrl}${processId}/approve`;
+    const deniedUrl = `${requestUrl}${processId}/deny`;
 
 
-    $http.get(measurementsUrl)
-        .then(function (response) {
-            $scope.measurementsData = response.body
-        });
+    // $http.get(measurementsUrl)
+    //     .then(function (response) {
+    //         $scope.measurementsData = response.body
+    //     });
 
-    $http.get(requestStatusesUrl)
-        .then(function (response) {
-            $scope.requestStatusData = response.body
-        });
+    // $http.get(requestStatusesUrl)
+    //     .then(function (response) {
+    //         $scope.requestStatusData = response.body
+    //     });
 
     $scope.furtherReview = function () {
 
