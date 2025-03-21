@@ -1,97 +1,102 @@
-#include <WiFi.h>
-#include "gps.h"
-#include "heart_rate_sensor.h"
-#include "auth.h"
+  #include <WiFi.h>
+  #include "gps.h"
+  #include "heart_rate_sensor.h"
+  #include "auth.h"
+  #include "ECG_Reader.h"
 
-const char* ssid = "#######";
-const char* password = "########";
-const char* serverURL = "http://###.###.###.###:5000/location";
 
-float heartRate = 0;
-float spO2 = 0;
-SemaphoreHandle_t dataMutex;
-bool shouldSend = false;
-unsigned long lastSentTime = 0;
+  const char* ssid = "ReadMy";
+  const char* password = "123456789";
+  const char* serverURL = "http://192.168.3.164:5000/location";
 
-String accessToken = "";
-String exchangedToken = "";
+  float heartRate = 0;
+  float spO2 = 0;
+  SemaphoreHandle_t dataMutex;
+  bool shouldSend = false;
+  unsigned long lastSentTime = 0;
 
-// Connect to WiFi
-void setupWiFi() {
-    WiFi.begin(ssid, password);
-    Serial.print("Connecting to WiFi");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("\nConnected!");
-}
+  String accessToken = "";
+  String exchangedToken = "";
 
-void authenticate() {
-    Serial.println("Starting authentication...");
+  // Connect to WiFi
+  void setupWiFi() {
+      WiFi.begin(ssid, password);
+      Serial.print("Connecting to WiFi");
+      while (WiFi.status() != WL_CONNECTED) {
+          delay(500);
+          Serial.print(".");
+      }
+      Serial.println("\nConnected!");
+  }
 
-    // Ensure ESP32 is fully initialized before making the request
-    delay(3000);
+  void authenticate() {
+      Serial.println("Starting authentication...");
 
-    accessToken = getAccessToken("nesechete", "nesechete");
-    if (!accessToken.isEmpty()) {
-        exchangedToken = exchangeToken(accessToken);
-    }
+      // Ensure ESP32 is fully initialized before making the request
+      delay(3000);
 
-    Serial.println("Authentication complete!");
-}
+      accessToken = getAccessToken("nesechete", "nesechete");
+      if (!accessToken.isEmpty()) {
+          exchangedToken = exchangeToken(accessToken);
+      }
 
-void sendTask(void *parameter) {
-    while (true) {
-        if (shouldSend) {
-            xSemaphoreTake(dataMutex, portMAX_DELAY);
-            float hr = heartRate;
-            float s = spO2;
-            shouldSend = false;
-            xSemaphoreGive(dataMutex);
+      Serial.println("Authentication complete!");
+  }
 
-            sendData(23, 23, hr, s, serverURL);
-        }
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
-}
+  void sendTask(void *parameter) {
+      while (true) {
+          if (shouldSend) {
+              xSemaphoreTake(dataMutex, portMAX_DELAY);
+              float hr = heartRate;
+              float s = spO2;
+              shouldSend = false;
+              xSemaphoreGive(dataMutex);
 
-void setup() {
-    Serial.begin(115200);
-    setupWiFi();
-    authenticate();
-    setupGPS();
-    setupHeartRateSensor();
+              sendData(23, 23, hr, s, ecgBuffer, serverURL);
+          }
+          vTaskDelay(1000 / portTICK_PERIOD_MS);
+      }
+  }
 
-    dataMutex = xSemaphoreCreateMutex();
+  void setup() {
+      Serial.begin(115200);
+      setupWiFi();
+      setupECG();
+      authenticate();
+      setupGPS();
+      setupHeartRateSensor();
+    
+      dataMutex = xSemaphoreCreateMutex();
 
-    // Create a FreeRTOS task for sending data
-    xTaskCreatePinnedToCore(
-        sendTask,        // Task function
-        "SendTask",      // Name
-        4096,            // Stack size
-        NULL,            // Parameters
-        1,               // Priority
-        NULL,            // Task handle
-        1                // Core 1
-    );
-}
+      startECGTask();
+      // Create a FreeRTOS task for sending data to
+      xTaskCreatePinnedToCore(
+          sendTask,        // Task function
+          "SendTask",      // Name
+          4096,            // Stack size
+          NULL,            // Parameters
+          1,               // Priority
+          NULL,            // Task handle
+          1                // Core 1
+      );
 
-void loop() {
-    updateHeartRateSensor();
-    updateGPS();
+  }
 
-    xSemaphoreTake(dataMutex, portMAX_DELAY);
-    heartRate = getHeartRate();
-    spO2 = getSpO2();
-    xSemaphoreGive(dataMutex);
+  void loop() {
+      updateHeartRateSensor();
+      updateGPS();
 
-    Serial.printf("HR: %.2f | SpO2: %.2f\n", heartRate, spO2);
+      xSemaphoreTake(dataMutex, portMAX_DELAY);
+      heartRate = getHeartRate();
+      spO2 = getSpO2();
+      xSemaphoreGive(dataMutex);
 
-    if (millis() - lastSentTime >= 10000) {
-        shouldSend = true;
-        lastSentTime = millis();
-    }
+      // Serial.printf("HR: %.2f | SpO2: %.2f\n", heartRate, spO2);
 
-    delay(100);
-}
+      if (millis() - lastSentTime >= 10000) {
+          shouldSend = true;
+          lastSentTime = millis();
+      }
+
+      // delay(100);
+  }
