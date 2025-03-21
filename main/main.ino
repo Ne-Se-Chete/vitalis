@@ -1,24 +1,44 @@
 #include <WiFi.h>
 #include "gps.h"
 #include "heart_rate_sensor.h"
+#include "auth.h"
 
-const char* ssid = "bobinet";
-const char* password = "bobkata2";
-const char* serverURL = "http://192.168.107.164:5000/location";
+const char* ssid = "#######";
+const char* password = "########";
+const char* serverURL = "http://###.###.###.###:5000/location";
 
 float heartRate = 0;
 float spO2 = 0;
-
-// Shared flag and mutex
 SemaphoreHandle_t dataMutex;
 bool shouldSend = false;
+unsigned long lastSentTime = 0;
 
+String accessToken = "";
+String exchangedToken = "";
+
+// Connect to WiFi
 void setupWiFi() {
     WiFi.begin(ssid, password);
-    unsigned long start = millis();
-    while (WiFi.status() != WL_CONNECTED && millis() - start < 10000) {
+    Serial.print("Connecting to WiFi");
+    while (WiFi.status() != WL_CONNECTED) {
         delay(500);
+        Serial.print(".");
     }
+    Serial.println("\nConnected!");
+}
+
+void authenticate() {
+    Serial.println("Starting authentication...");
+
+    // Ensure ESP32 is fully initialized before making the request
+    delay(3000);
+
+    accessToken = getAccessToken("nesechete", "nesechete");
+    if (!accessToken.isEmpty()) {
+        exchangedToken = exchangeToken(accessToken);
+    }
+
+    Serial.println("Authentication complete!");
 }
 
 void sendTask(void *parameter) {
@@ -39,11 +59,13 @@ void sendTask(void *parameter) {
 void setup() {
     Serial.begin(115200);
     setupWiFi();
+    authenticate();
     setupGPS();
     setupHeartRateSensor();
 
     dataMutex = xSemaphoreCreateMutex();
 
+    // Create a FreeRTOS task for sending data
     xTaskCreatePinnedToCore(
         sendTask,        // Task function
         "SendTask",      // Name
@@ -51,11 +73,9 @@ void setup() {
         NULL,            // Parameters
         1,               // Priority
         NULL,            // Task handle
-        0                // Core 0
+        1                // Core 1
     );
 }
-
-unsigned long lastSentTime = 0;
 
 void loop() {
     updateHeartRateSensor();
