@@ -19,8 +19,15 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Create .kube directory
-        run: mkdir -p $HOME/.kube
+      - name: Install Kompose
+        run: |
+          curl -L https://github.com/kubernetes/kompose/releases/latest/download/kompose-linux-amd64 -o /usr/local/bin/kompose
+          chmod +x /usr/local/bin/kompose
+
+      - name: Convert Docker Compose to Kubernetes Manifests
+        run: |
+          mkdir -p k8s-manifests
+          kompose convert -f deployment/docker-compose.yaml -o k8s-manifests/
 
       - name: Authenticate with Kubernetes
         env:
@@ -29,5 +36,4 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl scale deployment/vitalis --replicas=0 -n prod
-          kubectl apply -f deployment/vitalis.yaml
+          kubectl apply -f k8s-manifests/
