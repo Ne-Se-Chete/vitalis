@@ -51,7 +51,7 @@ services:
       KC_DB_SCHEME: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: https://keycloak.vitalis.proper-invest.tech
+      KC_HOSTNAME: https://keycloak.vitalis.nesechete.com
       KC_PROXY: edge
       PROXY_ADDRESS_FORWARDING: "true"
       KC_FEATURES: preview
@@ -67,8 +67,8 @@ services:
     environment:
       DIRIGIBLE_MULTI_TENANT_MODE: "false"
       SPRING_PROFILES_ACTIVE: keycloak
-      DIRIGIBLE_HOST: https://vitalis.proper-invest.tech
-      DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: https://keycloak.vitalis.proper-invest.tech/realms/ne-se-chete
+      DIRIGIBLE_HOST: https://vitalis.nesechete.com
+      DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: https://keycloak.vitalis.nesechete.com/realms/ne-se-chete
       DIRIGIBLE_KEYCLOAK_CLIENT_ID: vitalis
       DIRIGIBLE_KEYCLOAK_CLIENT_SECRET: ${BACKEND_CLIENT_SECRET}
       DIRIGIBLE_TRIAL_ENABLED: "true"
@@ -89,10 +89,10 @@ services:
     volumes:
       - /home/tomi/vitalis/deployment/nginx.conf:/etc/nginx/nginx.conf:ro
       - /home/tomi/nginx/nginx-challenges:/var/www/certbot:ro
-      - /home/tomi/nginx/nginx-certs/live/vitalis.proper-invest.tech:/etc/nginx/certs/live/vitalis.proper-invest.tech:ro
-      - /home/tomi/nginx/nginx-certs/live/keycloak.vitalis.proper-invest.tech:/etc/nginx/certs/live/keycloak.vitalis.proper-invest.tech:ro
-      - /home/tomi/nginx/nginx-certs/archive/vitalis.proper-invest.tech:/etc/nginx/certs/archive/vitalis.proper-invest.tech:ro
-      - /home/tomi/nginx/nginx-certs/archive/keycloak.vitalis.proper-invest.tech:/etc/nginx/certs/archive/keycloak.vitalis.proper-invest.tech:ro
+      - /home/tomi/nginx/nginx-certs/live/vitalis.nesechete.com:/etc/nginx/certs/live/vitalis.nesechete.com:ro
+      - /home/tomi/nginx/nginx-certs/live/keycloak.vitalis.nesechete.com:/etc/nginx/certs/live/keycloak.vitalis.nesechete.com:ro
+      - /home/tomi/nginx/nginx-certs/archive/vitalis.nesechete.com:/etc/nginx/certs/archive/vitalis.nesechete.com:ro
+      - /home/tomi/nginx/nginx-certs/archive/keycloak.vitalis.nesechete.com:/etc/nginx/certs/archive/keycloak.vitalis.nesechete.com:ro
     ports:
       - "443:443"
       - "80:80"

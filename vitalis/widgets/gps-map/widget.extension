@@ -1,0 +1,5 @@
+{
+    "extensionPoint": "dashboard-widgets",
+    "module": "vitalis/widgets/gps-map/service.js",
+    "description": "Map Widget"
+}
