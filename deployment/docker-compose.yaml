@@ -53,6 +53,7 @@ services:
       KC_DB_SCHEME: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: http://keycloak:8080
     ports:
       - "8080:8080"
     depends_on:
