@@ -166,6 +166,8 @@ spec:
               value: https://keycloak.vitalis.nesechete.com
             - name: KC_PROXY
               value: edge
+            - name KC_FEATURES
+              value: preview
 ---
 apiVersion: v1
 kind: Service
