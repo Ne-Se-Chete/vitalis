@@ -1,33 +1,38 @@
-import { user } from "sdk/security";
-import { response } from "sdk/http";
 import { PatientRepository } from "../gen/vitalis/dao/Patient/PatientRepository";
 import { DoctorRepository } from "../gen/vitalis/dao/Doctor/DoctorRepository";
+
+import { user } from "sdk/security";
+import { response } from "sdk/http";
+
 let patientDao = new PatientRepository();
-let DoctorDao = new DoctorRepository();
+let doctorDao = new DoctorRepository();
 
-
-let output = { username: user.getName(), role: "", userId: -1 }
+let output = { username: user.getName(), role: "", userId: -1 };
 
 if (user.isInRole("Doctor")) {
-
+    user.getAuthType
     output.role = "Doctor";
-    output.userId = patientDao.findAll({
+    let doctor = doctorDao.findAll({
         $filter: {
             equals: { Email: user.getName() }
         }
-    })[0].Id;
+    });
+
+    output.userId = doctor.Id;
 
 } else if (user.isInRole("Patient")) {
-
     output.role = "Patient";
-    output.userId = DoctorDao.findAll({
+    let patient = patientDao.findAll({
         $filter: {
             equals: { Email: user.getName() }
         }
-    })[0].Id;
+    });
+
+    output.userId = patient.Id;
 
 } else {
     output.role = "ERROR, Undefined role";
 }
 
 response.println(JSON.stringify(output));
+

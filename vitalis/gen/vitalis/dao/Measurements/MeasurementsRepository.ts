@@ -11,7 +11,7 @@ export interface MeasurementsEntity {
     Latitude?: number;
     ECG?: string;
     BloodOxidation?: number;
-    HartRate?: number;
+    HeartRate?: number;
 }
 
 export interface MeasurementsCreateEntity {
@@ -20,7 +20,7 @@ export interface MeasurementsCreateEntity {
     readonly Latitude?: number;
     readonly ECG?: string;
     readonly BloodOxidation?: number;
-    readonly HartRate?: number;
+    readonly HeartRate?: number;
 }
 
 export interface MeasurementsUpdateEntity extends MeasurementsCreateEntity {
@@ -37,7 +37,7 @@ export interface MeasurementsEntityOptions {
             Latitude?: number | number[];
             ECG?: string | string[];
             BloodOxidation?: number | number[];
-            HartRate?: number | number[];
+            HeartRate?: number | number[];
         };
         notEquals?: {
             Id?: number | number[];
@@ -47,7 +47,7 @@ export interface MeasurementsEntityOptions {
             Latitude?: number | number[];
             ECG?: string | string[];
             BloodOxidation?: number | number[];
-            HartRate?: number | number[];
+            HeartRate?: number | number[];
         };
         contains?: {
             Id?: number;
@@ -57,7 +57,7 @@ export interface MeasurementsEntityOptions {
             Latitude?: number;
             ECG?: string;
             BloodOxidation?: number;
-            HartRate?: number;
+            HeartRate?: number;
         };
         greaterThan?: {
             Id?: number;
@@ -67,7 +67,7 @@ export interface MeasurementsEntityOptions {
             Latitude?: number;
             ECG?: string;
             BloodOxidation?: number;
-            HartRate?: number;
+            HeartRate?: number;
         };
         greaterThanOrEqual?: {
             Id?: number;
@@ -77,7 +77,7 @@ export interface MeasurementsEntityOptions {
             Latitude?: number;
             ECG?: string;
             BloodOxidation?: number;
-            HartRate?: number;
+            HeartRate?: number;
         };
         lessThan?: {
             Id?: number;
@@ -87,7 +87,7 @@ export interface MeasurementsEntityOptions {
             Latitude?: number;
             ECG?: string;
             BloodOxidation?: number;
-            HartRate?: number;
+            HeartRate?: number;
         };
         lessThanOrEqual?: {
             Id?: number;
@@ -97,7 +97,7 @@ export interface MeasurementsEntityOptions {
             Latitude?: number;
             ECG?: string;
             BloodOxidation?: number;
-            HartRate?: number;
+            HeartRate?: number;
         };
     },
     $select?: (keyof MeasurementsEntity)[],
@@ -165,8 +165,8 @@ export class MeasurementsRepository {
                 type: "DECIMAL",
             },
             {
-                name: "HartRate",
-                column: "MEASUREMENTS_HARTRATE",
+                name: "HeartRate",
+                column: "MEASUREMENTS_HEARTRATE",
                 type: "INTEGER",
             }
         ]

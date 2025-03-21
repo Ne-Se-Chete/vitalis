@@ -41,6 +41,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			$scope.$apply(function () {
 				$scope.entity = {};
 				$scope.optionsGender = [];
+				$scope.optionsDoctor = [];
 				$scope.action = 'select';
 			});
 		});
@@ -52,6 +53,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 				}
 				$scope.entity = msg.data.entity;
 				$scope.optionsGender = msg.data.optionsGender;
+				$scope.optionsDoctor = msg.data.optionsDoctor;
 				$scope.action = 'select';
 			});
 		});
@@ -60,6 +62,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			$scope.$apply(function () {
 				$scope.entity = {};
 				$scope.optionsGender = msg.data.optionsGender;
+				$scope.optionsDoctor = msg.data.optionsDoctor;
 				$scope.action = 'create';
 			});
 		});
@@ -71,11 +74,13 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 				}
 				$scope.entity = msg.data.entity;
 				$scope.optionsGender = msg.data.optionsGender;
+				$scope.optionsDoctor = msg.data.optionsDoctor;
 				$scope.action = 'update';
 			});
 		});
 
 		$scope.serviceGender = "/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts";
+		$scope.serviceDoctor = "/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts";
 
 		//-----------------Events-------------------//
 
@@ -115,6 +120,12 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 				entity: {},
 			}, null, false);
 		};
+		$scope.createDoctor = function () {
+			messageHub.showDialogWindow("Doctor-details", {
+				action: "create",
+				entity: {},
+			}, null, false);
+		};
 
 		//-----------------Dialogs-------------------//
 
@@ -126,6 +137,17 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			$scope.optionsGender = [];
 			$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts").then(function (response) {
 				$scope.optionsGender = response.data.map(e => {
+					return {
+						value: e.Id,
+						text: e.Name
+					}
+				});
+			});
+		};
+		$scope.refreshDoctor = function () {
+			$scope.optionsDoctor = [];
+			$http.get("/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts").then(function (response) {
+				$scope.optionsDoctor = response.data.map(e => {
 					return {
 						value: e.Id,
 						text: e.Name

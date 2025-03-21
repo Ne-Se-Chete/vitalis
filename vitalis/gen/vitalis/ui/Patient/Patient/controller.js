@@ -120,6 +120,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 				entity: entity,
 				selectedMainEntityId: entity.Id,
 				optionsGender: $scope.optionsGender,
+				optionsDoctor: $scope.optionsDoctor,
 			});
 		};
 
@@ -130,6 +131,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.postMessage("createEntity", {
 				entity: {},
 				optionsGender: $scope.optionsGender,
+				optionsDoctor: $scope.optionsDoctor,
 			});
 		};
 
@@ -138,6 +140,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.postMessage("updateEntity", {
 				entity: $scope.selectedEntity,
 				optionsGender: $scope.optionsGender,
+				optionsDoctor: $scope.optionsDoctor,
 			});
 		};
 
@@ -175,11 +178,13 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.showDialogWindow("Patient-filter", {
 				entity: $scope.filterEntity,
 				optionsGender: $scope.optionsGender,
+				optionsDoctor: $scope.optionsDoctor,
 			});
 		};
 
 		//----------------Dropdowns-----------------//
 		$scope.optionsGender = [];
+		$scope.optionsDoctor = [];
 
 
 		$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts").then(function (response) {
@@ -191,10 +196,27 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
+		$http.get("/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts").then(function (response) {
+			$scope.optionsDoctor = response.data.map(e => {
+				return {
+					value: e.Id,
+					text: e.Name
+				}
+			});
+		});
+
 		$scope.optionsGenderValue = function (optionKey) {
 			for (let i = 0; i < $scope.optionsGender.length; i++) {
 				if ($scope.optionsGender[i].value === optionKey) {
 					return $scope.optionsGender[i].text;
+				}
+			}
+			return null;
+		};
+		$scope.optionsDoctorValue = function (optionKey) {
+			for (let i = 0; i < $scope.optionsDoctor.length; i++) {
+				if ($scope.optionsDoctor[i].value === optionKey) {
+					return $scope.optionsDoctor[i].text;
 				}
 			}
 			return null;

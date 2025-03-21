@@ -28,6 +28,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			$scope.selectedMainEntityKey = params.selectedMainEntityKey;
 			$scope.selectedMainEntityId = params.selectedMainEntityId;
 			$scope.optionsGender = params.optionsGender;
+			$scope.optionsDoctor = params.optionsDoctor;
 		}
 
 		$scope.create = function () {
@@ -65,6 +66,18 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		
 		$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts").then(function (response) {
 			$scope.optionsGender = response.data.map(e => {
+				return {
+					value: e.Id,
+					text: e.Name
+				}
+			});
+		});
+		$scope.serviceDoctor = "/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts";
+		
+		$scope.optionsDoctor = [];
+		
+		$http.get("/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts").then(function (response) {
+			$scope.optionsDoctor = response.data.map(e => {
 				return {
 					value: e.Id,
 					text: e.Name

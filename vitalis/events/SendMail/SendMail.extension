@@ -1,0 +1,5 @@
+{
+    "module": "vitalis/events/SendMail/SendMailHandler.ts",
+    "extensionPoint": "vitalis-Measurements-Measurements",
+    "description": "Send Request Extension"
+}
