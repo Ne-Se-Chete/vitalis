@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Doctor",
+        "description": "This role provides permitions to access data viewable only by doctors."
+    },
+    {
+        "name": "Patient",
+        "description": "This role provides permitions to access data viewable only by patients."
+    }
+]
