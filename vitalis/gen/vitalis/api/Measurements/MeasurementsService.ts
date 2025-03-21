@@ -119,9 +119,6 @@ class MeasurementsService {
     }
 
     private validateEntity(entity: any): void {
-        if (entity.Timestamp?.length > 20) {
-            throw new ValidationError(`The 'Timestamp' exceeds the maximum length of [20] characters`);
-        }
         if (entity.ECG?.length > 255) {
             throw new ValidationError(`The 'ECG' exceeds the maximum length of [255] characters`);
         }

@@ -5,7 +5,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["entityApiProvider", function (entityApiProvider) {
 		entityApiProvider.baseUrl = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts";
 	}])
-	.controller('PageController', ['$scope',  'messageHub', 'ViewParameters', 'entityApi', function ($scope,  messageHub, ViewParameters, entityApi) {
+	.controller('PageController', ['$scope',  '$http', 'messageHub', 'ViewParameters', 'entityApi', function ($scope,  $http, messageHub, ViewParameters, entityApi) {
 
 		$scope.entity = {};
 		$scope.forms = {
@@ -21,9 +21,13 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		let params = ViewParameters.get();
 		if (Object.keys(params).length) {
 			$scope.action = params.action;
+			if (params.entity.Timestamp) {
+				params.entity.Timestamp = new Date(params.entity.Timestamp);
+			}
 			$scope.entity = params.entity;
 			$scope.selectedMainEntityKey = params.selectedMainEntityKey;
 			$scope.selectedMainEntityId = params.selectedMainEntityId;
+			$scope.optionsPatient = params.optionsPatient;
 		}
 
 		$scope.create = function () {
@@ -55,6 +59,18 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		};
 
+		$scope.servicePatient = "/services/ts/vitalis/gen/vitalis/api/Patient/PatientService.ts";
+		
+		$scope.optionsPatient = [];
+		
+		$http.get("/services/ts/vitalis/gen/vitalis/api/Patient/PatientService.ts").then(function (response) {
+			$scope.optionsPatient = response.data.map(e => {
+				return {
+					value: e.Id,
+					text: e.Name
+				}
+			});
+		});
 
 		$scope.cancel = function () {
 			$scope.entity = {};

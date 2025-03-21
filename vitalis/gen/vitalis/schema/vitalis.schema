@@ -101,8 +101,7 @@
                         "name": "MEASUREMENTS_PATIENT"
                     },
                     {
-                        "type": "VARCHAR",
-                        "length": 20,
+                        "type": "TIMESTAMP",
                         "nullable": true,
                         "name": "MEASUREMENTS_TIMESTAMP"
                     },

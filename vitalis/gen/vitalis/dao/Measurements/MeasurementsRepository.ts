@@ -6,7 +6,7 @@ import { dao as daoApi } from "sdk/db";
 export interface MeasurementsEntity {
     readonly Id: number;
     Patient?: number;
-    Timestamp?: string;
+    Timestamp?: Date;
     Longitude?: number;
     Latitude?: number;
     ECG?: string;
@@ -32,7 +32,7 @@ export interface MeasurementsEntityOptions {
         equals?: {
             Id?: number | number[];
             Patient?: number | number[];
-            Timestamp?: string | string[];
+            Timestamp?: Date | Date[];
             Longitude?: number | number[];
             Latitude?: number | number[];
             ECG?: string | string[];
@@ -42,7 +42,7 @@ export interface MeasurementsEntityOptions {
         notEquals?: {
             Id?: number | number[];
             Patient?: number | number[];
-            Timestamp?: string | string[];
+            Timestamp?: Date | Date[];
             Longitude?: number | number[];
             Latitude?: number | number[];
             ECG?: string | string[];
@@ -52,7 +52,7 @@ export interface MeasurementsEntityOptions {
         contains?: {
             Id?: number;
             Patient?: number;
-            Timestamp?: string;
+            Timestamp?: Date;
             Longitude?: number;
             Latitude?: number;
             ECG?: string;
@@ -62,7 +62,7 @@ export interface MeasurementsEntityOptions {
         greaterThan?: {
             Id?: number;
             Patient?: number;
-            Timestamp?: string;
+            Timestamp?: Date;
             Longitude?: number;
             Latitude?: number;
             ECG?: string;
@@ -72,7 +72,7 @@ export interface MeasurementsEntityOptions {
         greaterThanOrEqual?: {
             Id?: number;
             Patient?: number;
-            Timestamp?: string;
+            Timestamp?: Date;
             Longitude?: number;
             Latitude?: number;
             ECG?: string;
@@ -82,7 +82,7 @@ export interface MeasurementsEntityOptions {
         lessThan?: {
             Id?: number;
             Patient?: number;
-            Timestamp?: string;
+            Timestamp?: Date;
             Longitude?: number;
             Latitude?: number;
             ECG?: string;
@@ -92,7 +92,7 @@ export interface MeasurementsEntityOptions {
         lessThanOrEqual?: {
             Id?: number;
             Patient?: number;
-            Timestamp?: string;
+            Timestamp?: Date;
             Longitude?: number;
             Latitude?: number;
             ECG?: string;
@@ -142,7 +142,7 @@ export class MeasurementsRepository {
             {
                 name: "Timestamp",
                 column: "MEASUREMENTS_TIMESTAMP",
-                type: "VARCHAR",
+                type: "TIMESTAMP",
             },
             {
                 name: "Longitude",

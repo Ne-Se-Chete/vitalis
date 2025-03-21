@@ -11,9 +11,16 @@ angular.module('page', ["ideUI", "ideView"])
 
 		let params = ViewParameters.get();
 		if (Object.keys(params).length) {
+			if (params?.entity?.TimestampFrom) {
+				params.entity.TimestampFrom = new Date(params.entity.TimestampFrom);
+			}
+			if (params?.entity?.TimestampTo) {
+				params.entity.TimestampTo = new Date(params.entity.TimestampTo);
+			}
 			$scope.entity = params.entity ?? {};
 			$scope.selectedMainEntityKey = params.selectedMainEntityKey;
 			$scope.selectedMainEntityId = params.selectedMainEntityId;
+			$scope.optionsPatient = params.optionsPatient;
 		}
 
 		$scope.filter = function () {
@@ -42,8 +49,11 @@ angular.module('page', ["ideUI", "ideView"])
 			if (entity.Patient !== undefined) {
 				filter.$filter.equals.Patient = entity.Patient;
 			}
-			if (entity.Timestamp) {
-				filter.$filter.contains.Timestamp = entity.Timestamp;
+			if (entity.TimestampFrom) {
+				filter.$filter.greaterThanOrEqual.Timestamp = entity.TimestampFrom;
+			}
+			if (entity.TimestampTo) {
+				filter.$filter.lessThanOrEqual.Timestamp = entity.TimestampTo;
 			}
 			if (entity.Longitude !== undefined) {
 				filter.$filter.equals.Longitude = entity.Longitude;
