@@ -4,6 +4,7 @@
 #include <TinyGPSPlus.h>
 #include <HardwareSerial.h>
 #include "gps.h"
+#include <ECG_Reader.h>
 
 #define RXD2 33
 #define TXD2 32
@@ -43,7 +44,7 @@ float getLongitude() {
     return gps.location.lng();
 }
 
-void sendData(float latitude, float longitude, float heartRate, float spo2, const char* serverURL) {
+void sendData(float latitude, float longitude, float heartRate, float spo2, signed int *ecgBuffer, const char* serverURL) {
     if (WiFi.status() == WL_CONNECTED) {
         HTTPClient http;
         http.begin(serverURL);
@@ -52,7 +53,20 @@ void sendData(float latitude, float longitude, float heartRate, float spo2, cons
         String jsonPayload = "{\"latitude\": " + String(latitude, 6) + 
                              ", \"longitude\": " + String(longitude, 6) + 
                              ", \"heart_rate\": " + String(heartRate, 2) + 
-                             ", \"spo2\": " + String(spo2, 2) + "}";
+                             ", \"spo2\": " + String(spo2, 2) + 
+                             ", \"ECG\": [";
+
+        // Convert ECG buffer to JSON array
+        for (int i = 0; i < ECG_BUFFER_SIZE; i++) {
+            jsonPayload += String(ecgBuffer[i]);
+            // Serial.println(String(ecgBuffer[i]));
+            if (i < ECG_BUFFER_SIZE - 1) {
+                jsonPayload += ",";
+            }
+        }
+
+        jsonPayload += "]}";  // Close the JSON array and object
+
 
         int httpResponseCode = http.POST(jsonPayload);
 
@@ -63,6 +77,8 @@ void sendData(float latitude, float longitude, float heartRate, float spo2, cons
         }
 
         http.end();
+
+        clearECGBuffer();
     } else {
         Serial.println("No WiFi connection, skipping data send.");
     }

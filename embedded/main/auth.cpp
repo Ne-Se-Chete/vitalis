@@ -1,11 +1,12 @@
 #include "auth.h"
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 
 String getAccessToken(const char* username, const char* password) {
     HTTPClient http;
     WiFiClientSecure client;
-    client.setInsecure();  // For development only, remove this in production
+    client.setInsecure(); // For development only, remove in production
 
     http.begin(client, "https://keycloak.vitalis.proper-invest.tech/realms/ne-se-chete/protocol/openid-connect/token");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -15,35 +16,38 @@ String getAccessToken(const char* username, const char* password) {
     body += "&password=" + String(password);
 
     int httpResponseCode = http.POST(body);
+    String accessToken = "";
 
     if (httpResponseCode == 200) {
-        String payload = http.getString();
-        Serial.println("First Request Successful. Response:");
-        Serial.println(payload);
+        // Stream JSON response directly to avoid holding large String
+        StaticJsonDocument<2048> doc; 
+        DeserializationError error = deserializeJson(doc, http.getStream());
 
-        int tokenStart = payload.indexOf("access_token\":\"") + strlen("access_token\":\"");
-        int tokenEnd = payload.indexOf("\"", tokenStart);
-        String accessToken = payload.substring(tokenStart, tokenEnd);
-
-        http.end();
-        return accessToken;
+        if (!error && doc.containsKey("access_token")) {
+            accessToken = doc["access_token"].as<String>();
+            Serial.println("Access token successfully extracted.");
+        } else {
+            Serial.print("JSON parsing failed: ");
+            Serial.println(error.c_str());
+        }
     } else {
-        Serial.print("First Request Failed! Code: ");
+        Serial.print("Auth request failed, code: ");
         Serial.println(httpResponseCode);
-        http.end();
-        return "";
     }
+
+    http.end();
+    return accessToken;
 }
 
 String exchangeToken(String accessToken) {
     if (accessToken.isEmpty()) {
-        Serial.println("No Access Token to exchange.");
+        Serial.println("No access token to exchange.");
         return "";
     }
 
     HTTPClient http;
     WiFiClientSecure client;
-    client.setInsecure();  // For development only, remove this in production
+    client.setInsecure(); // For development only, remove in production
 
     http.begin(client, "https://keycloak.vitalis.proper-invest.tech/realms/ne-se-chete/protocol/openid-connect/token");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -54,22 +58,24 @@ String exchangeToken(String accessToken) {
     body += "&audience=vitalis";
 
     int httpResponseCode = http.POST(body);
+    String exchangedToken = "";
 
     if (httpResponseCode == 200) {
-        String payload = http.getString();
-        Serial.println("Second Request Successful. Response:");
-        Serial.println(payload);
+        StaticJsonDocument<2048> doc; 
+        DeserializationError error = deserializeJson(doc, http.getStream());
 
-        int tokenStart = payload.indexOf("access_token\":\"") + strlen("access_token\":\"");
-        int tokenEnd = payload.indexOf("\"", tokenStart);
-        String exchangedToken = payload.substring(tokenStart, tokenEnd);
-
-        http.end();
-        return exchangedToken;
+        if (!error && doc.containsKey("access_token")) {
+            exchangedToken = doc["access_token"].as<String>();
+            Serial.println("Exchanged token successfully extracted.");
+        } else {
+            Serial.print("JSON parsing failed: ");
+            Serial.println(error.c_str());
+        }
     } else {
-        Serial.print("Second Request Failed! Code: ");
+        Serial.print("Token exchange failed, code: ");
         Serial.println(httpResponseCode);
-        http.end();
-        return "";
     }
+
+    http.end();
+    return exchangedToken;
 }

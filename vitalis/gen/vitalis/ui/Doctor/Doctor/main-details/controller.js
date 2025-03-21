@@ -5,7 +5,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["entityApiProvider", function (entityApiProvider) {
 		entityApiProvider.baseUrl = "/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts";
 	}])
-	.controller('PageController', ['$scope',  'Extensions', 'messageHub', 'entityApi', function ($scope,  Extensions, messageHub, entityApi) {
+	.controller('PageController', ['$scope',  '$http', 'Extensions', 'messageHub', 'entityApi', function ($scope,  $http, Extensions, messageHub, entityApi) {
 
 		$scope.entity = {};
 		$scope.forms = {
@@ -40,6 +40,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHub.onDidReceiveMessage("clearDetails", function (msg) {
 			$scope.$apply(function () {
 				$scope.entity = {};
+				$scope.optionsGender = [];
 				$scope.action = 'select';
 			});
 		});
@@ -47,6 +48,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHub.onDidReceiveMessage("entitySelected", function (msg) {
 			$scope.$apply(function () {
 				$scope.entity = msg.data.entity;
+				$scope.optionsGender = msg.data.optionsGender;
 				$scope.action = 'select';
 			});
 		});
@@ -54,6 +56,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHub.onDidReceiveMessage("createEntity", function (msg) {
 			$scope.$apply(function () {
 				$scope.entity = {};
+				$scope.optionsGender = msg.data.optionsGender;
 				$scope.action = 'create';
 			});
 		});
@@ -61,10 +64,12 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHub.onDidReceiveMessage("updateEntity", function (msg) {
 			$scope.$apply(function () {
 				$scope.entity = msg.data.entity;
+				$scope.optionsGender = msg.data.optionsGender;
 				$scope.action = 'update';
 			});
 		});
 
+		$scope.serviceGender = "/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts";
 
 		//-----------------Events-------------------//
 
@@ -98,6 +103,12 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		
 		//-----------------Dialogs-------------------//
 		
+		$scope.createGender = function () {
+			messageHub.showDialogWindow("Gender-details", {
+				action: "create",
+				entity: {},
+			}, null, false);
+		};
 
 		//-----------------Dialogs-------------------//
 
@@ -105,6 +116,17 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 
 		//----------------Dropdowns-----------------//
 
+		$scope.refreshGender = function () {
+			$scope.optionsGender = [];
+			$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts").then(function (response) {
+				$scope.optionsGender = response.data.map(e => {
+					return {
+						value: e.Id,
+						text: e.Name
+					}
+				});
+			});
+		};
 
 		//----------------Dropdowns-----------------//	
 		

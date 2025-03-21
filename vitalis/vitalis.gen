@@ -612,10 +612,12 @@
           "description": "",
           "name": "Gender",
           "tooltip": "",
+          "widgetDropDownKey": "Id",
+          "widgetDropDownValue": "Name",
           "widgetIsMajor": true,
           "widgetLength": "20",
           "widgetSize": "",
-          "widgetType": "TEXTBOX",
+          "widgetType": "DROPDOWN",
           "relationshipName": "Doctor_Gender",
           "relationshipEntityName": "Gender",
           "relationshipEntityPerspectiveName": "Settings",
@@ -627,7 +629,7 @@
           "isRequiredProperty": false,
           "isCalculatedProperty": false,
           "widgetLabel": "Gender",
-          "widgetDropdownUrl": "",
+          "widgetDropdownUrl": "/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts",
           "dataTypeJava": "int",
           "dataTypeTypescript": "number",
           "inputRule": ""
@@ -724,10 +726,12 @@
             "description": "",
             "name": "Gender",
             "tooltip": "",
+            "widgetDropDownKey": "Id",
+            "widgetDropDownValue": "Name",
             "widgetIsMajor": true,
             "widgetLength": "20",
             "widgetSize": "",
-            "widgetType": "TEXTBOX",
+            "widgetType": "DROPDOWN",
             "relationshipName": "Doctor_Gender",
             "relationshipEntityName": "Gender",
             "relationshipEntityPerspectiveName": "Settings",
@@ -739,13 +743,14 @@
             "isRequiredProperty": false,
             "isCalculatedProperty": false,
             "widgetLabel": "Gender",
-            "widgetDropdownUrl": "",
+            "widgetDropdownUrl": "/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts",
             "dataTypeJava": "int",
             "dataTypeTypescript": "number",
             "inputRule": ""
           }
         ]
-      }
+      },
+      "hasDropdowns": true
     },
     {
       "properties": [

@@ -2,10 +2,12 @@
 #include "gps.h"
 #include "heart_rate_sensor.h"
 #include "auth.h"
+#include "ECG_Reader.h"
 
-const char* ssid = "#######";
-const char* password = "########";
-const char* serverURL = "http://###.###.###.###:5000/location";
+
+const char* ssid = "ReadMy";
+const char* password = "123456789";
+const char* serverURL = "http://192.168.3.164:5000/location";
 
 float heartRate = 0;
 float spO2 = 0;
@@ -50,7 +52,7 @@ void sendTask(void *parameter) {
             shouldSend = false;
             xSemaphoreGive(dataMutex);
 
-            sendData(23, 23, hr, s, serverURL);
+            sendData(23, 23, hr, s, ecgBuffer, serverURL);
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
@@ -59,13 +61,15 @@ void sendTask(void *parameter) {
 void setup() {
     Serial.begin(115200);
     setupWiFi();
+    setupECG();
     authenticate();
     setupGPS();
     setupHeartRateSensor();
-
+  
     dataMutex = xSemaphoreCreateMutex();
 
-    // Create a FreeRTOS task for sending data
+    startECGTask();
+    // Create a FreeRTOS task for sending data to
     xTaskCreatePinnedToCore(
         sendTask,        // Task function
         "SendTask",      // Name
@@ -75,6 +79,7 @@ void setup() {
         NULL,            // Task handle
         1                // Core 1
     );
+
 }
 
 void loop() {
@@ -86,12 +91,12 @@ void loop() {
     spO2 = getSpO2();
     xSemaphoreGive(dataMutex);
 
-    Serial.printf("HR: %.2f | SpO2: %.2f\n", heartRate, spO2);
+    // Serial.printf("HR: %.2f | SpO2: %.2f\n", heartRate, spO2);
 
     if (millis() - lastSentTime >= 10000) {
         shouldSend = true;
         lastSentTime = millis();
     }
 
-    delay(100);
+    // delay(100);
 }

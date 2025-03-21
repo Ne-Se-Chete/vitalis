@@ -16,7 +16,7 @@
     <property name="Id" description="" tooltip="" dataName="DOCTOR_ID" dataType="INTEGER" dataNullable="true" dataPrimaryKey="true" dataAutoIncrement="true" widgetType="TEXTBOX" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
     <property name="Name" description="" tooltip="" dataName="DOCTOR_NAME" dataType="VARCHAR" dataLength="255" dataNullable="true" dataUnique="true" isRequiredProperty="true" widgetType="TEXTBOX" widgetSize="" widgetLength="255" widgetIsMajor="true"></property>
     <property name="Email" description="" tooltip="" dataName="DOCTOR_EMAIL" dataType="VARCHAR" dataLength="255" dataNullable="true" dataUnique="true" isRequiredProperty="true" widgetType="EMAIL" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
-    <property name="Gender" description="" tooltip="" dataName="DOCTOR_GENDER" dataType="INTEGER" dataNullable="true" widgetType="TEXTBOX" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
+    <property name="Gender" description="" tooltip="" dataName="DOCTOR_GENDER" dataType="INTEGER" dataNullable="true" widgetType="DROPDOWN" widgetSize="" widgetLength="20" widgetIsMajor="true" widgetDropDownKey="Id" widgetDropDownValue="Name"></property>
   </entity>
   <relation name="Patient_Gender" type="relation" entity="Patient" relationName="Patient_Gender" relationshipEntityPerspectiveName="Settings" relationshipEntityPerspectiveLabel="Entities" property="Gender" referenced="Gender" referencedProperty="Id">
   </relation>
