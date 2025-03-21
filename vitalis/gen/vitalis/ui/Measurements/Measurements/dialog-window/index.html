@@ -32,21 +32,15 @@
                         	<fd-form-label for="idPatient" dg-required="false" dg-colon="true">Patient</fd-form-label>
                         </div>
                         <div class="fd-col  fd-col-md--8 ">
-	                        <fd-form-input-message-group dg-inactive="{{ forms.details['Patient'].$valid }}">
-	                            <fd-input id="idPatient"
-	                                name="Patient"
-	                                state="{{ forms.details['Patient'].$valid ? '' : 'error' }}"
-									ng-required="false"
-	                                ng-model="entity.Patient"
-	                                ng-readonly="action === 'select'"
-	                                ng-minlength="${property.minLength} || 0"
-	                                ng-maxlength="${property.maxLength} || -1"
-	                                dg-input-rules="{ patterns: [''] }"
-	                                type="text"
-	                                placeholder="Enter Patient">
-	                            </fd-input>
-	                            <fd-form-message dg-type="error">The value doesn't match the required pattern ''</fd-form-message>
-	                        </fd-form-input-message-group>
+	                        <fd-combobox-input id="idPatient"
+	                            name="Patient"
+	                            state="{{ forms.details['Patient'].$valid ? '' : 'error' }}"
+	                            ng-required="false"
+	                            ng-model="entity.Patient"
+	                            dg-disabled="action === 'select'"
+	                            dropdown-items="optionsPatient"
+	                            dg-placeholder="Search Patient ...">
+	                        </fd-combobox-input>
 	                        <i class="sap-icon--information" role="presentation" onclick="javascript:alert('')"></i>
 	                    </div>
                     </fd-form-item>
@@ -62,8 +56,8 @@
 									ng-required="false"
 	                                ng-model="entity.Timestamp"
 	                                ng-readonly="true"
-	                                ng-minlength="0.0 || 0"
-	                                ng-maxlength="20.0 || -1"
+	                                ng-minlength="${property.minLength} || 0"
+	                                ng-maxlength="${property.maxLength} || -1"
 	                                dg-input-rules="{ patterns: [''] }"
 	                                type="text"
 	                                placeholder="Enter Timestamp">

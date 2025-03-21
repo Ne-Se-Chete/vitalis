@@ -5,7 +5,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["entityApiProvider", function (entityApiProvider) {
 		entityApiProvider.baseUrl = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts";
 	}])
-	.controller('PageController', ['$scope', 'messageHub', 'entityApi', 'Extensions', function ($scope, messageHub, entityApi, Extensions) {
+	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', 'Extensions', function ($scope, $http, messageHub, entityApi, Extensions) {
 
 		$scope.dataPage = 1;
 		$scope.dataCount = 0;
@@ -92,6 +92,13 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 						messageHub.showAlertError("Measurements", `Unable to list/filter Measurements: '${response.message}'`);
 						return;
 					}
+
+					response.data.forEach(e => {
+						if (e.Timestamp) {
+							e.Timestamp = new Date(e.Timestamp);
+						}
+					});
+
 					$scope.data = response.data;
 				});
 			});
@@ -107,12 +114,14 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.showDialogWindow("Measurements-details", {
 				action: "select",
 				entity: entity,
+				optionsPatient: $scope.optionsPatient,
 			});
 		};
 
 		$scope.openFilter = function (entity) {
 			messageHub.showDialogWindow("Measurements-filter", {
 				entity: $scope.filterEntity,
+				optionsPatient: $scope.optionsPatient,
 			});
 		};
 
@@ -121,6 +130,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.showDialogWindow("Measurements-details", {
 				action: "create",
 				entity: {},
+				optionsPatient: $scope.optionsPatient,
 			}, null, false);
 		};
 
@@ -128,6 +138,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.showDialogWindow("Measurements-details", {
 				action: "update",
 				entity: entity,
+				optionsPatient: $scope.optionsPatient,
 			}, null, false);
 		};
 
@@ -159,5 +170,28 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 				}
 			});
 		};
+
+		//----------------Dropdowns-----------------//
+		$scope.optionsPatient = [];
+
+
+		$http.get("/services/ts/vitalis/gen/vitalis/api/Patient/PatientService.ts").then(function (response) {
+			$scope.optionsPatient = response.data.map(e => {
+				return {
+					value: e.Id,
+					text: e.Name
+				}
+			});
+		});
+
+		$scope.optionsPatientValue = function (optionKey) {
+			for (let i = 0; i < $scope.optionsPatient.length; i++) {
+				if ($scope.optionsPatient[i].value === optionKey) {
+					return $scope.optionsPatient[i].text;
+				}
+			}
+			return null;
+		};
+		//----------------Dropdowns-----------------//
 
 	}]);
