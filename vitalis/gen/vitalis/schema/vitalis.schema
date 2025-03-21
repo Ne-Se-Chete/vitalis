@@ -111,12 +111,12 @@
                         "name": "MEASUREMENTS_TIMESTAMP"
                     },
                     {
-                        "type": "DECIMAL",
+                        "type": "DOUBLE",
                         "nullable": true,
                         "name": "MEASUREMENTS_LONGITUDE"
                     },
                     {
-                        "type": "DECIMAL",
+                        "type": "DOUBLE",
                         "nullable": true,
                         "name": "MEASUREMENTS_LATITUDE"
                     },

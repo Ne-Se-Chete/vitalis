@@ -5,7 +5,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["entityApiProvider", function (entityApiProvider) {
 		entityApiProvider.baseUrl = "/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts";
 	}])
-	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', 'Extensions', function ($scope, $http, messageHub, entityApi, Extensions) {
+	.controller('PageController', ['$scope', 'messageHub', 'entityApi', 'Extensions', function ($scope, messageHub, entityApi, Extensions) {
 
 		$scope.dataPage = 1;
 		$scope.dataCount = 0;
@@ -112,7 +112,6 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.postMessage("entitySelected", {
 				entity: entity,
 				selectedMainEntityId: entity.Id,
-				optionsGender: $scope.optionsGender,
 			});
 		};
 
@@ -120,17 +119,13 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			$scope.selectedEntity = null;
 			$scope.action = "create";
 
-			messageHub.postMessage("createEntity", {
-				entity: {},
-				optionsGender: $scope.optionsGender,
-			});
+			messageHub.postMessage("createEntity");
 		};
 
 		$scope.updateEntity = function () {
 			$scope.action = "update";
 			messageHub.postMessage("updateEntity", {
 				entity: $scope.selectedEntity,
-				optionsGender: $scope.optionsGender,
 			});
 		};
 
@@ -167,31 +162,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.openFilter = function (entity) {
 			messageHub.showDialogWindow("Doctor-filter", {
 				entity: $scope.filterEntity,
-				optionsGender: $scope.optionsGender,
 			});
 		};
-
-		//----------------Dropdowns-----------------//
-		$scope.optionsGender = [];
-
-
-		$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts").then(function (response) {
-			$scope.optionsGender = response.data.map(e => {
-				return {
-					value: e.Id,
-					text: e.Name
-				}
-			});
-		});
-
-		$scope.optionsGenderValue = function (optionKey) {
-			for (let i = 0; i < $scope.optionsGender.length; i++) {
-				if ($scope.optionsGender[i].value === optionKey) {
-					return $scope.optionsGender[i].text;
-				}
-			}
-			return null;
-		};
-		//----------------Dropdowns-----------------//
 
 	}]);

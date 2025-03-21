@@ -147,12 +147,12 @@ export class MeasurementsRepository {
             {
                 name: "Longitude",
                 column: "MEASUREMENTS_LONGITUDE",
-                type: "DECIMAL",
+                type: "DOUBLE",
             },
             {
                 name: "Latitude",
                 column: "MEASUREMENTS_LATITUDE",
-                type: "DECIMAL",
+                type: "DOUBLE",
             },
             {
                 name: "ECG",
