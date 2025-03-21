@@ -54,6 +54,7 @@ services:
       KC_HOSTNAME: https://keycloak.vitalis.proper-invest.tech
       KC_PROXY: edge
       PROXY_ADDRESS_FORWARDING: "true"
+      KC_FEATURES: preview
     depends_on:
       keycloak-db:
         condition: service_healthy
