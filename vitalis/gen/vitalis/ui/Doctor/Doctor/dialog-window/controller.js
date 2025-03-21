@@ -5,7 +5,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["entityApiProvider", function (entityApiProvider) {
 		entityApiProvider.baseUrl = "/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts";
 	}])
-	.controller('PageController', ['$scope',  '$http', 'messageHub', 'ViewParameters', 'entityApi', function ($scope,  $http, messageHub, ViewParameters, entityApi) {
+	.controller('PageController', ['$scope',  'messageHub', 'ViewParameters', 'entityApi', function ($scope,  messageHub, ViewParameters, entityApi) {
 
 		$scope.entity = {};
 		$scope.forms = {
@@ -24,7 +24,6 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			$scope.entity = params.entity;
 			$scope.selectedMainEntityKey = params.selectedMainEntityKey;
 			$scope.selectedMainEntityId = params.selectedMainEntityId;
-			$scope.optionsGender = params.optionsGender;
 		}
 
 		$scope.create = function () {
@@ -56,18 +55,6 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		};
 
-		$scope.serviceGender = "/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts";
-		
-		$scope.optionsGender = [];
-		
-		$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts").then(function (response) {
-			$scope.optionsGender = response.data.map(e => {
-				return {
-					value: e.Id,
-					text: e.Name
-				}
-			});
-		});
 
 		$scope.cancel = function () {
 			$scope.entity = {};

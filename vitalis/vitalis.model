@@ -230,12 +230,10 @@
                         "description": "",
                         "name": "Gender",
                         "tooltip": "",
-                        "widgetDropDownKey": "Id",
-                        "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
                         "widgetLength": "20",
                         "widgetSize": "",
-                        "widgetType": "DROPDOWN",
+                        "widgetType": "TEXTBOX",
                         "relationshipName": "Doctor_Gender",
                         "relationshipEntityName": "Gender",
                         "relationshipEntityPerspectiveName": "Settings",
@@ -318,26 +316,26 @@
                     {
                         "dataName": "MEASUREMENTS_LONGITUDE",
                         "dataNullable": "true",
-                        "dataType": "DECIMAL",
+                        "dataType": "DOUBLE",
                         "description": "",
                         "name": "Longitude",
                         "tooltip": "",
                         "widgetIsMajor": "true",
                         "widgetLength": "255",
                         "widgetSize": "",
-                        "widgetType": "NUMBER"
+                        "widgetType": "TEXTBOX"
                     },
                     {
                         "dataName": "MEASUREMENTS_LATITUDE",
                         "dataNullable": "true",
-                        "dataType": "DECIMAL",
+                        "dataType": "DOUBLE",
                         "description": "",
                         "name": "Latitude",
                         "tooltip": "",
                         "widgetIsMajor": "true",
                         "widgetLength": "20",
                         "widgetSize": "",
-                        "widgetType": "NUMBER"
+                        "widgetType": "TEXTBOX"
                     },
                     {
                         "dataLength": "255",
