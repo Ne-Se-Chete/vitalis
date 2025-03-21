@@ -71,7 +71,6 @@ services:
       SPRING_PROFILES_ACTIVE: keycloak
       DIRIGIBLE_KEYCLOAK_AUTH_SERVER_URL: http://localhost:8080/realms/ne-se-chete
       DIRIGIBLE_KEYCLOAK_CLIENT_ID: vitalis
-      DIRIGIBLE_TRIAL_ENABLED: "true"
       DIRIGIBLE_DATABASE_CUSTOM_DATASOURCES: PostgreSQL
       PostgreSQL_DRIVER: org.postgresql.Driver
       PostgreSQL_URL: jdbc:postgresql://vitalis_db:5432/vitalis
