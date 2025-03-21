@@ -2,5 +2,5 @@
     "extensionPoint": "dashboard-navigations",
     "module": "vitalis/navigations/patients/service.js",
     "description": "Patients Navigation",
-    "role": "Doctor"
+    "role": ""
 }
