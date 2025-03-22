@@ -338,7 +338,7 @@
                         "widgetType": "TEXTBOX"
                     },
                     {
-                        "dataLength": "20000",
+                        "dataLength": "255",
                         "dataName": "MEASUREMENTS_ECG",
                         "dataNullable": "true",
                         "dataType": "VARCHAR",
@@ -346,7 +346,7 @@
                         "name": "ECG",
                         "tooltip": "",
                         "widgetIsMajor": "true",
-                        "widgetLength": "20000",
+                        "widgetLength": "20",
                         "widgetSize": "",
                         "widgetType": "TEXTBOX"
                     },
