@@ -246,6 +246,11 @@ spec:
               value: "true"
             - name: LEAVE_REQUEST_APP_FROM_EMAIL
               value: enestech6@gmail.com
+            - name: OPEN_AI_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-backend-secret
+                  key: AI_CLIENT_SECRET
 ---
 apiVersion: v1
 kind: Service
