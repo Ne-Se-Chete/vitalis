@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="templateApp" ng-controller="templateController">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" sizes="any" href="data:;base64,iVBORw0KGgo=">
+        <title>Measurement Review</title>
+        <theme></theme>
+        <script type="text/javascript" src="/services/js/resources-core/services/loader.js?id=application-view-js"></script>
+        <link type="text/css" rel="stylesheet" href="/services/js/resources-core/services/loader.js?id=application-view-css" />
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="controller.js"></script>
+    </head>
+
+    <body>
+        <div>
+            <h2>AI Review</h2>
+            <div id="content">
+                <p id="answer">{{ aiResponse }}</p>
+            </div>
+
+            <label for="description">Do you Agree Description:</label>
+
+            <div id="submit_buttons">
+                <button ng-click="submitRequest(1)">Yes</button>
+                <button ng-click="submitRequest(2)">No</button>
+            </div>
+        </div>
+    </body>
+
+</html>

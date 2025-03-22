@@ -1,0 +1,5 @@
+{
+    "extensionPoint": "dashboard-widgets",
+    "module": "vitalis/widgets/latest-oxydation/service.js",
+    "description": "Average BPM Widget"
+}
