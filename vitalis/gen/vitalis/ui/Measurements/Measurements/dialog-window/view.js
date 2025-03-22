@@ -7,7 +7,7 @@ const viewData = {
     id: "Measurements-details",
     label: "Measurements",
     link: "/services/web/vitalis/gen/vitalis/ui/Measurements/Measurements/dialog-window/index.html",
-    perspectiveName: "Measurements"
+    perspectiveName: "Measurements",
 };
 
 if (typeof exports !== 'undefined') {

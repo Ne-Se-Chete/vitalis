@@ -1,0 +1,5 @@
+{
+    "extensionPoint": "dashboard-widgets",
+    "module": "vitalis/widgets/ecg/service.js",
+    "description": "ECG Widget"
+}

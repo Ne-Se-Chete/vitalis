@@ -1,24 +1,7 @@
 const leaflet = angular.module('leaflet', ['ideUI', 'ideView']);
 
-const URL_GET_DATA = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts"
+const URL_GET_DATA = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts";
 
-// sets up the request data for chatgpt
-function getRequestData(information, tokens) {
-    return {
-        model: "gpt-4",
-        messages: [
-            // {
-            //     role: "system",
-            //     content: "You are an assistant."
-            // },
-            {
-                role: "user",
-                content: information
-            }
-        ],
-        max_tokens: tokens
-    };
-}
 
 leaflet.controller('LeafletViewController', ['$scope', "$http", '$document', 'messageHub', 'ViewParameters', function ($scope, $http, $document, messageHub, ViewParameters) {
     $scope.state = {
@@ -31,13 +14,8 @@ leaflet.controller('LeafletViewController', ['$scope', "$http", '$document', 'me
         var map = L.map('map');
 
         var customMarker = L.Marker.extend({
-            options: {
-                gptPrompt: "",
-                ph: 7,
-                typeTrash: "",
-                IsThereOil: "",
-                DateTime: "08:09"
-            }
+            // options: {
+            // }
         });
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -60,78 +38,12 @@ leaflet.controller('LeafletViewController', ['$scope', "$http", '$document', 'me
 
         function createMarker(object) {
             let markers = [];
-
-            // object.forEach(markerData => {
-            //     //creates a new marker
-            //     let marker = new customMarker([markerData.Latitude, markerData.Longitude], {
-            //         gptPrompt: markerData.gptPrompt || "",
-            //         ph: markerData.ph,
-            //         typeTrash: markerData.typeTrash,
-            //         IsThereOil: markerData.IsThereOil,
-            //         DateTime: markerData.DateTime
-            //     });
-
-
-            //     //setup the message and tokens
-            //     let instruction = `Summorize in 2 sentences what meassuring ${marker.options.ph} ph in an ocean means`;
-            //     let tokens = 60;
-
-            //     if (marker.options.typeTrash != "none") {
-            //         instruction += ` what ${marker.options.typeTrash} in the watter means`
-            //         tokens += 20
-            //     }
-
-            //     if (marker.options.IsThereOil) {
-            //         instruction += " and what oil in the watter means"
-            //         tokens += 20
-            //     }
-
-            //     $http.post('https://api.openai.com/v1/chat/completions', getRequestData(instruction, tokens), {
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'Authorization': 'Bearer ' + "YOUR_KEY" // Replace YOUR_API_KEY with your actual API key
-            //         }
-            //     }).then(function (response) {
-            //         marker.options.gptPrompt = response.data.choices[0].message.content;
-
-            //         let popupContent = document.createElement('div');
-            //         popupContent.innerHTML = `
-            //             <div id="popup">
-            //                 <b>Information about event:</b> ${marker.options.gptPrompt}<br><br>
-            //                 <b>-------------</b><br>
-            //                 <b>Raw data</b><br>
-            //                 <b>-------------</b><br>
-            //                 <b>pH:</b> ${marker.options.ph}<br>
-            //                 <b>typeTrash:</b> ${marker.options.typeTrash}<br>
-            //                 <b>IsThereOil:</b> ${marker.options.IsThereOil}<br>
-            //                 <b>DateTime:</b> ${marker.options.DateTime}<br><br>
-            //             </div>`;
-
-            //         markers.push(marker);
-            //         marker.addTo(map)
-
-            //         let popup = L.popup().setContent(popupContent);
-            //         marker.bindPopup(popup);
-            //     },
-            //         function (_) {
-            //             let popupContent = document.createElement('div');
-            //             popupContent.innerHTML = `
-            //             <div id="popup">
-            //                 <b>Information about event:</b> <br><br>
-            //                 <b>pH:</b> ${marker.options.ph}<br>
-            //                 <b>typeTrash:</b> ${marker.options.typeTrash}<br>
-            //                 <b>IsThereOil:</b> ${marker.options.IsThereOil}<br>
-            //                 <b>DateTime:</b> ${marker.options.DateTime}<br><br>
-            //             </div>`;
-
-            //             markers.push(marker);
-            //             marker.addTo(map)
-
-            //             let popup = L.popup().setContent(popupContent);
-            //             marker.bindPopup(popup);
-            //         }
-            //     );
-            // });
+            object.forEach(markerData => {
+                //creates a new marker
+                let marker = new customMarker([markerData.Latitude, markerData.Longitude], {});
+                markers.push(marker);
+                marker.addTo(map);
+            });
         }
 
         $http.get(URL_GET_DATA)
