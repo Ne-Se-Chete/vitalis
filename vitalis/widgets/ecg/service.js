@@ -1,7 +1,7 @@
 const widgetData = {
     id: 'gps-map-widget',
     label: 'GPS Widget',
-    link: '/services/web/vitalis/widgets/gps-map/index.html',
+    link: '/services/web/vitalis/widgets/ecg/index.html',
     size: "large"
 };
 
