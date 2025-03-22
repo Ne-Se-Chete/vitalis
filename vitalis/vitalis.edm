@@ -28,12 +28,10 @@
     <property name="Timestamp" description="" tooltip="" dataName="MEASUREMENTS_TIMESTAMP" dataType="TIMESTAMP" dataNullable="true" isCalculatedProperty="true" calculatedPropertyExpressionCreate="new Date()" widgetType="TEXTBOX" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
     <property name="Longitude" description="" tooltip="" dataName="MEASUREMENTS_LONGITUDE" dataType="DOUBLE" dataNullable="true" widgetType="TEXTBOX" widgetSize="" widgetLength="255" widgetIsMajor="true"></property>
     <property name="Latitude" description="" tooltip="" dataName="MEASUREMENTS_LATITUDE" dataType="DOUBLE" dataNullable="true" widgetType="TEXTBOX" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
-    <property name="ECG" description="" tooltip="" dataName="MEASUREMENTS_ECG" dataType="VARCHAR" dataLength="20000" dataNullable="true" widgetType="TEXTBOX" widgetSize="" widgetLength="20000" widgetIsMajor="true"></property>
+    <property name="ECG" description="" tooltip="" dataName="MEASUREMENTS_ECG" dataType="VARCHAR" dataLength="255" dataNullable="true" widgetType="TEXTBOX" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
     <property name="BloodOxidation" description="" tooltip="" dataName="MEASUREMENTS_BLOODOXIDATION" dataType="DECIMAL" dataNullable="true" widgetType="NUMBER" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
     <property name="HeartRate" description="" tooltip="" dataName="MEASUREMENTS_HEARTRATE" dataType="INTEGER" dataNullable="true" widgetType="NUMBER" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
   </entity>
-  <relation name="Measurements_Patient" type="relation" entity="Measurements" relationName="Measurements_Patient" relationshipEntityPerspectiveName="Patient" relationshipEntityPerspectiveLabel="Entities" property="Patient" referenced="Patient" referencedProperty="Id">
-  </relation>
   <entity name="Requests" dataName="REQUESTS" dataCount="SELECT COUNT(*) AS COUNT FROM &quot;${tablePrefix}REQUESTS&quot;" dataQuery="" type="PRIMARY" title="Requests" caption="Manage entity Requests" description="Manage entity Requests" tooltip="Requests" icon="/services/web/resources/unicons/file.svg" menuKey="requests" menuLabel="Requests" menuIndex="100" layoutType="MANAGE" navigationPath="/Home" perspectiveName="Requests" perspectiveLabel="Requests" perspectiveIcon="/services/web/resources/unicons/calendar-alt.svg" perspectiveOrder="900" perspectiveRole="Requests" generateReport="false" generateDefaultRoles="false" feedUsername="YWRtaW4=" feedPassword="YWRtaW4=">
     <property name="Id" description="" tooltip="" dataName="REQUESTS_ID" dataType="INTEGER" dataNullable="true" dataPrimaryKey="true" dataAutoIncrement="true" widgetType="TEXTBOX" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
     <property name="Date" description="" tooltip="" dataName="REQUESTS_DATE" dataType="DATE" dataNullable="true" isCalculatedProperty="true" calculatedPropertyExpressionCreate="new Date()" widgetType="TEXTBOX" widgetSize="" widgetLength="20" widgetIsMajor="true"></property>
@@ -50,6 +48,8 @@
   <relation name="Requests_Measurements" type="relation" entity="Requests" relationName="Requests_Measurements" relationshipEntityPerspectiveName="Measurements" relationshipEntityPerspectiveLabel="Entities" property="Measurements" referenced="Measurements" referencedProperty="Id">
   </relation>
   <relation name="Patient_Doctor" type="relation" entity="Patient" relationName="Patient_Doctor" relationshipEntityPerspectiveName="Doctor" relationshipEntityPerspectiveLabel="Entities" property="Doctor" referenced="Doctor" referencedProperty="Id">
+  </relation>
+  <relation name="Measurements_Patient" type="relation" entity="Measurements" relationName="Measurements_Patient" relationshipEntityPerspectiveName="Patient" relationshipEntityPerspectiveLabel="Entities" property="Patient" referenced="Patient" referencedProperty="Id">
   </relation>
  </entities>
  <perspectives>
