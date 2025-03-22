@@ -9,9 +9,9 @@ angular.module('bpm', ['ideUI', 'ideView'])
         const URL_GET_DATA = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts"
         $http.get(URL_GET_DATA)
             .then(function (response) {
-                $scope.HeartRate = 0;
-                if (Array.isArray(response.data) && response.data.length > 0 && response.data[response.data.length - 1].HeartRate) {
-                    $scope.HeartRate = response.data[response.data.length - 1].HeartRate;
+                $scope.BloodOxidation = 0;
+                if (Array.isArray(response.data) && response.data.length > 0 && response.data[response.data.length - 1].BloodOxidation) {
+                    $scope.BloodOxidation = response.data[response.data.length - 1].BloodOxidation;
                 }
             });
     }]);
