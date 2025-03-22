@@ -44,29 +44,31 @@ float getLongitude() {
     return gps.location.lng();
 }
 
-void sendData(float latitude, float longitude, float heartRate, float spo2, signed int *ecgBuffer, const char* serverURL) {
+void sendData(float latitude, float longitude, float heartRate, float spo2, signed int *ecgBuffer, const char* serverURL, const char* bearerToken) {
     if (WiFi.status() == WL_CONNECTED) {
         HTTPClient http;
         http.begin(serverURL);
+        http.addHeader("Authorization", String("Bearer ") + bearerToken);
         http.addHeader("Content-Type", "application/json");
 
-        String jsonPayload = "{\"latitude\": " + String(latitude, 6) + 
-                             ", \"longitude\": " + String(longitude, 6) + 
-                             ", \"heart_rate\": " + String(heartRate, 2) + 
-                             ", \"spo2\": " + String(spo2, 2) + 
-                             ", \"ECG\": [";
-
-        // Convert ECG buffer to JSON array
+        String ecgData = "";
         for (int i = 0; i < ECG_BUFFER_SIZE; i++) {
-            jsonPayload += String(ecgBuffer[i]);
-            // Serial.println(String(ecgBuffer[i]));
-            if (i < ECG_BUFFER_SIZE - 1) {
-                jsonPayload += ",";
-            }
+            ecgData += String(ecgBuffer[i]);
+            if (i < ECG_BUFFER_SIZE - 1) ecgData += ",";
         }
 
-        jsonPayload += "]}";  // Close the JSON array and object
+        Serial.println(ecgData);
+        Serial.println();
 
+
+        String jsonPayload = "{"
+                     "\"Latitude\": " + String(latitude, 6) +
+                     ", \"Longitude\": " + String(longitude, 6) +
+                     ", \"HeartRate\": " + String(heartRate, 2) +
+                     ", \"BloodOxidation\": " + String(spo2, 2) +
+                     ", \"Patient\": " + String(1) +
+                     ", \"ECG\": \"" + ecgData + "\"" 
+                     "}";
 
         int httpResponseCode = http.POST(jsonPayload);
 

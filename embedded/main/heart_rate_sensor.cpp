@@ -12,7 +12,6 @@ float currentHeartRate = 0;
 float currentSpO2 = 0;
 unsigned long lastBeatTime = 0;
 
-// Sensor update function
 void updateHeartRateSensor() {
     pox.update();
     currentHeartRate = pox.getHeartRate();
@@ -26,7 +25,7 @@ void setupHeartRateSensor() {
 
     if (!pox.begin()) {
         Serial.println("Failed to initialize MAX30100. Restarting ESP...");
-        ESP.restart();  // Restart instead of infinite loop
+        ESP.restart();  // Restart instead of inf loop
     }
 
     pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA);

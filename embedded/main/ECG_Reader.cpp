@@ -1,6 +1,6 @@
 #include "ECG_Reader.h"
 
-const size_t ECG_BUFFER_SIZE = 500;
+const size_t ECG_BUFFER_SIZE = 1500;
 signed int ecgBuffer[ECG_BUFFER_SIZE];
 size_t ecgIndex = 0;
 SemaphoreHandle_t ecgDataMutex = NULL;
@@ -19,11 +19,11 @@ void clearECGBuffer() {
 
 int readECGValue() {
   if (digitalRead(LO_PLUS) == 1 || digitalRead(LO_MINUS) == 1) {
-    Serial.println("-1");
+    // Serial.println("-1");
     return -1; // leads off detected
   } else {
     int ecgValue = analogRead(OUTPUT_AD8323);
-    Serial.println(ecgValue);
+    // Serial.println(ecgValue);
     return ecgValue;
 
   }
@@ -45,7 +45,7 @@ void ecgReadTask(void *parameter) {
     }
     xSemaphoreGive(ecgDataMutex);
 
-    delay(1); // adjust sampling rate if needed
+    delay(1);
   }
 }
 

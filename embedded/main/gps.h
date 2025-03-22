@@ -9,6 +9,6 @@ void updateGPS();
 bool isGPSUpdated();
 float getLatitude();
 float getLongitude();
-void sendData(float latitude, float longitude, float heartRate, float spo2, signed int *ecgBuffer, const char* serverURL);
+void sendData(float latitude, float longitude, float heartRate, float spo2, signed int *ecgBuffer, const char* serverURL, const char* bearerToken);
 
 #endif

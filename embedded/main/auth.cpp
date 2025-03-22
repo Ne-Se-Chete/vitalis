@@ -3,79 +3,61 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-String getAccessToken(const char* username, const char* password) {
-    HTTPClient http;
-    WiFiClientSecure client;
-    client.setInsecure(); // For development only, remove in production
+String getAccessToken(String username, String password, String client_id) {
+  HTTPClient http;
+  http.begin(keycloakURL);
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    http.begin(client, "https://keycloak.vitalis.proper-invest.tech/realms/ne-se-chete/protocol/openid-connect/token");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  String postData = 
+      "grant_type=password"
+      "&client_id=" + client_id +
+      "&username=" + username +
+      "&password=" + password;
 
-    String body = "grant_type=password&client_id=vitalis-node";
-    body += "&username=" + String(username);
-    body += "&password=" + String(password);
+  int httpResponseCode = http.POST(postData);
+  String token = "";
 
-    int httpResponseCode = http.POST(body);
-    String accessToken = "";
+  if (httpResponseCode == 200) {
+    String response = http.getString();
+    Serial.println("Initial response: " + response);
+    DynamicJsonDocument doc(1024);
+    deserializeJson(doc, response);
+    token = doc["access_token"].as<String>();
+  } else {
+    Serial.println("Token request failed: " + String(httpResponseCode));
+  }
 
-    if (httpResponseCode == 200) {
-        // Stream JSON response directly to avoid holding large String
-        StaticJsonDocument<2048> doc; 
-        DeserializationError error = deserializeJson(doc, http.getStream());
-
-        if (!error && doc.containsKey("access_token")) {
-            accessToken = doc["access_token"].as<String>();
-            Serial.println("Access token successfully extracted.");
-        } else {
-            Serial.print("JSON parsing failed: ");
-            Serial.println(error.c_str());
-        }
-    } else {
-        Serial.print("Auth request failed, code: ");
-        Serial.println(httpResponseCode);
-    }
-
-    http.end();
-    return accessToken;
+  http.end();
+  return token;
 }
 
-String exchangeToken(String accessToken) {
-    if (accessToken.isEmpty()) {
-        Serial.println("No access token to exchange.");
-        return "";
-    }
+String exchangeToken(String subject_token, String client_id, String audience) {
+  HTTPClient http;
+  http.begin(keycloakURL);
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    HTTPClient http;
-    WiFiClientSecure client;
-    client.setInsecure(); // For development only, remove in production
+  String postData = 
+      "grant_type=urn:ietf:params:oauth:grant-type:token-exchange"
+      "&client_id=" + client_id +
+      "&subject_token=" + subject_token;
 
-    http.begin(client, "https://keycloak.vitalis.proper-invest.tech/realms/ne-se-chete/protocol/openid-connect/token");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  if (audience != "") {
+    postData += "&audience=" + audience;
+  }
 
-    String body = "grant_type=urn:ietf:params:oauth:grant-type:token-exchange";
-    body += "&client_id=vitalis-node";
-    body += "&subject_token=" + accessToken;
-    body += "&audience=vitalis";
+  int httpResponseCode = http.POST(postData);
+  String exchangedToken = "";
 
-    int httpResponseCode = http.POST(body);
-    String exchangedToken = "";
+  if (httpResponseCode == 200) {
+    String response = http.getString();
+    Serial.println("Exchange response: " + response);
+    DynamicJsonDocument doc(1024);
+    deserializeJson(doc, response);
+    exchangedToken = doc["access_token"].as<String>();
+  } else {
+    Serial.println("Token exchange failed: " + String(httpResponseCode));
+  }
 
-    if (httpResponseCode == 200) {
-        StaticJsonDocument<2048> doc; 
-        DeserializationError error = deserializeJson(doc, http.getStream());
-
-        if (!error && doc.containsKey("access_token")) {
-            exchangedToken = doc["access_token"].as<String>();
-            Serial.println("Exchanged token successfully extracted.");
-        } else {
-            Serial.print("JSON parsing failed: ");
-            Serial.println(error.c_str());
-        }
-    } else {
-        Serial.print("Token exchange failed, code: ");
-        Serial.println(httpResponseCode);
-    }
-
-    http.end();
-    return exchangedToken;
+  http.end();
+  return exchangedToken;
 }
