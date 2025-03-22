@@ -114,6 +114,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.showDialogWindow("Requests-details", {
 				action: "select",
 				entity: entity,
+				optionsStatus: $scope.optionsStatus,
 				optionsMeasurements: $scope.optionsMeasurements,
 			});
 		};
@@ -121,6 +122,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.openFilter = function (entity) {
 			messageHub.showDialogWindow("Requests-filter", {
 				entity: $scope.filterEntity,
+				optionsStatus: $scope.optionsStatus,
 				optionsMeasurements: $scope.optionsMeasurements,
 			});
 		};
@@ -130,6 +132,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.showDialogWindow("Requests-details", {
 				action: "create",
 				entity: {},
+				optionsStatus: $scope.optionsStatus,
 				optionsMeasurements: $scope.optionsMeasurements,
 			}, null, false);
 		};
@@ -138,6 +141,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			messageHub.showDialogWindow("Requests-details", {
 				action: "update",
 				entity: entity,
+				optionsStatus: $scope.optionsStatus,
 				optionsMeasurements: $scope.optionsMeasurements,
 			}, null, false);
 		};
@@ -172,8 +176,18 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		};
 
 		//----------------Dropdowns-----------------//
+		$scope.optionsStatus = [];
 		$scope.optionsMeasurements = [];
 
+
+		$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/RequestStatusService.ts").then(function (response) {
+			$scope.optionsStatus = response.data.map(e => {
+				return {
+					value: e.Id,
+					text: e.Name
+				}
+			});
+		});
 
 		$http.get("/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts").then(function (response) {
 			$scope.optionsMeasurements = response.data.map(e => {
@@ -184,6 +198,14 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
+		$scope.optionsStatusValue = function (optionKey) {
+			for (let i = 0; i < $scope.optionsStatus.length; i++) {
+				if ($scope.optionsStatus[i].value === optionKey) {
+					return $scope.optionsStatus[i].text;
+				}
+			}
+			return null;
+		};
 		$scope.optionsMeasurementsValue = function (optionKey) {
 			for (let i = 0; i < $scope.optionsMeasurements.length; i++) {
 				if ($scope.optionsMeasurements[i].value === optionKey) {

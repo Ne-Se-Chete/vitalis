@@ -4,11 +4,11 @@
  * Do not modify the content as it may be re-generated again.
  */
 const viewData = {
-    id: "Measurements",
+    id: "Measurements-details",
     label: "Measurements",
     factory: "frame",
-    region: "left",
-    link: "/services/web/vitalis/gen/vitalis/ui/Measurements/Measurements/index.html",
+    region: "center",
+    link: "/services/web/vitalis/gen/vitalis/ui/Measurements/Measurements/main-details/index.html",
     perspectiveName: "Measurements"
 };
 
