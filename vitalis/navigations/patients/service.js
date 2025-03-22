@@ -1,5 +1,5 @@
 const navigationData = {
-    id: 'doctors-navigation',
+    id: 'patient-navigation',
     label: "Patients",
     group: "main",
     order: 100,
