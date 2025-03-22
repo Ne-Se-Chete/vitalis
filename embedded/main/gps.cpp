@@ -45,43 +45,48 @@ float getLongitude() {
 }
 
 void sendData(float latitude, float longitude, float heartRate, float spo2, signed int *ecgBuffer, const char* serverURL, const char* bearerToken) {
-    if (WiFi.status() == WL_CONNECTED) {
-        HTTPClient http;
-        http.begin(serverURL);
-        http.addHeader("Authorization", String("Bearer ") + bearerToken);
-        http.addHeader("Content-Type", "application/json");
+  HTTPClient http;
 
-        String ecgData = "";
-        for (int i = 0; i < ECG_BUFFER_SIZE; i++) {
-            ecgData += String(ecgBuffer[i]);
-            if (i < ECG_BUFFER_SIZE - 1) ecgData += ",";
-        }
+  String proxyURL = "####/api/v1.3/forward";  // send to a http -> https proxy for the keycloak
+  String targetURL = "####/api/v1.3/data";
 
-        Serial.println(ecgData);
-        Serial.println();
+  http.begin(proxyURL);
+  http.addHeader("Authorization", String("Bearer ") + bearerToken);
+  http.addHeader("Content-Type", "application/json");
+
+  String ecgData = "";
+  for (int i = 0; i < ECG_BUFFER_SIZE; i++) {
+      ecgData += String(ecgBuffer[i]);
+      if (i < ECG_BUFFER_SIZE - 1) ecgData += ",";
+  }
+
+  // Serial.println("ECG Data: " + ecgData); 
+  Serial.println();
+
+  String jsonPayload = "{"
+                        "\"Latitude\": " + String(latitude, 6) +
+                        ", \"Longitude\": " + String(longitude, 6) +
+                        ", \"HeartRate\": " + String(heartRate, 2) +
+                        ", \"BloodOxidation\": " + String(spo2, 2) +
+                        ", \"Patient\": " + String(1) +
+                        ", \"ECG\": \"" + ecgData + "\"" 
+                        "}";
+
+  int httpResponseCode = http.POST(jsonPayload);
+
+  if (httpResponseCode > 0) {
+      Serial.printf("Data sent successfully to the proxy! Response: %d\n", httpResponseCode);
 
 
-        String jsonPayload = "{"
-                     "\"Latitude\": " + String(latitude, 6) +
-                     ", \"Longitude\": " + String(longitude, 6) +
-                     ", \"HeartRate\": " + String(heartRate, 2) +
-                     ", \"BloodOxidation\": " + String(spo2, 2) +
-                     ", \"Patient\": " + String(1) +
-                     ", \"ECG\": \"" + ecgData + "\"" 
-                     "}";
+      Serial.println(targetURL);
+      Serial.println(jsonPayload);
+  } else {
+      Serial.printf("Failed to send data to the proxy. HTTP Response: %d\n", httpResponseCode);
+  }
 
-        int httpResponseCode = http.POST(jsonPayload);
+  http.end();
 
-        if (httpResponseCode > 0) {
-            Serial.printf("Data sent successfully! Response: %d\n", httpResponseCode);
-        } else {
-            Serial.printf("Failed to send data. HTTP Response: %d\n", httpResponseCode);
-        }
+  clearECGBuffer();
 
-        http.end();
-
-        clearECGBuffer();
-    } else {
-        Serial.println("No WiFi connection, skipping data send.");
-    }
 }
+

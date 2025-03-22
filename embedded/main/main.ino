@@ -1,14 +1,30 @@
-#include <WiFi.h>
+#include <TinyGsmClient.h>
+#include <ArduinoHttpClient.h>
+#include <ArduinoJson.h>
+
 #include "gps.h"
 #include "heart_rate_sensor.h"
 #include "auth.h"
 #include "ECG_Reader.h"
-#include <HTTPClient.h>
-#include <ArduinoJson.h>
 
+#define SIM800L_AXP192_VERSION_20200327
 
-const char* ssid = "####";
-const char* password = "####";
+#define DUMP_AT_COMMANDS
+
+#define SerialAT  Serial1
+
+#define TINY_GSM_MODEM_SIM800          
+#define TINY_GSM_RX_BUFFER      1024
+
+#ifdef DUMP_AT_COMMANDS
+#include <StreamDebugger.h>
+StreamDebugger debugger(SerialAT, Serial);
+TinyGsm modem(debugger);
+#else
+TinyGsm modem(SerialAT);
+#endif
+
+TinyGsmClient client(modem);
 
 float heartRate = 0;
 float spO2 = 0;
@@ -22,12 +38,10 @@ String exchangedToken = "";
 String syncUserIdURL = "https://app.vitalis.nesechete.com/services/ts/vitalis/api/syncUserId.ts";
 String measurmentsURL = "https://app.vitalis.nesechete.com/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts";
 
-
 int userId = 1;
 
 #define BUTTON_PIN 5
 volatile bool buttonPressed = false;
-
 
 void getSyncUserId(String bearerToken, String username) {
   HTTPClient http;
@@ -56,17 +70,6 @@ void getSyncUserId(String bearerToken, String username) {
   http.end(); 
 }
 
-// Connect to WiFi
-void setupWiFi() {
-    WiFi.begin(ssid, password);
-    Serial.print("Connecting to WiFi");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("\nConnected!");
-}
-
 void authenticate() {
   Serial.println("Step 1: Getting initial token...");
   bearerToken  = getAccessToken("bobcho", "bobcho", "vitalis-node");
@@ -92,22 +95,41 @@ void sendTask(void *parameter) {
             shouldSend = false;
             xSemaphoreGive(dataMutex);
 
-            sendData(23, 23, hr, s, ecgBuffer, measurmentsURL.c_str(), bearerToken.c_str());
+            sendData(getLatitude(), getLongitude(), hr, s, ecgBuffer, measurmentsURL.c_str(), bearerToken.c_str());
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
 
-void IRAM_ATTR buttonISR() {
-  buttonPressed = true;
-}
-
 void setup() {
     Serial.begin(115200);
-    pinMode(BUTTON_PIN, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), buttonISR, FALLING);  
 
-    setupWiFi();
+    setupModem();
+
+    SerialAT.begin(115200, SERIAL_8N1, MODEM_RX, MODEM_TX);
+    delay(6000);
+
+    Serial.println("Initializing modem...");
+    modem.restart();
+
+    Serial.print("Connecting to GSM network...");
+    if (!modem.waitForNetwork()) {
+        Serial.println("Failed to connect to network");
+        while (true); 
+    }
+    Serial.println("Connected to network");
+
+    Serial.print("Connecting to GPRS with APN: ");
+    Serial.println(apn);
+    if (!modem.gprsConnect(apn, gprsUser, gprsPass)) {
+        Serial.println("Failed to connect to GPRS");
+        while (true);  
+    }
+    Serial.println("Connected to GPRS");
+}
+
+void loop() {
+
     setupECG();
     authenticate();
     setupGPS();
@@ -130,11 +152,6 @@ void setup() {
 }
 
 void loop() {
-    if (buttonPressed) {
-
-      shouldSend = true;
-      buttonPressed = false;
-    }
 
     updateHeartRateSensor();
     updateGPS();
@@ -144,11 +161,11 @@ void loop() {
     spO2 = getSpO2();
     xSemaphoreGive(dataMutex);
 
-    // // Serial.printf("HR: %.2f | SpO2: %.2f\n", heartRate, spO2);
+    // Serial.printf("HR: %.2f | SpO2: %.2f\n", heartRate, spO2);
 
-    // if (millis() - lastSentTime >= 10000) {
-    //     lastSentTime = millis();
-    // }
+    if (millis() - lastSentTime >= 10000) {
+        lastSentTime = millis();
+    }
 
     delay(100);
 }
