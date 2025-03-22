@@ -101,9 +101,8 @@ const HomeScreen = () => {
         </TouchableOpacity>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.metricsContainer}>
-          <View style={styles.metricBox}><Text style={styles.metricText}>Steps: 8,432</Text></View>
-          <View style={styles.metricBox}><Text style={styles.metricText}>Calories: 487 kcal</Text></View>
-          <View style={styles.metricBox}><Text style={styles.metricText}>Distance: 3.2 km</Text></View>
+          <View style={styles.metricBox}><Text style={styles.metricText}>Blood Oxidation: 98%</Text></View>
+          <View style={styles.metricBox}><Text style={styles.metricText}>Current BPM: 100</Text></View>
         </ScrollView>
       </ScrollView>
     </SafeAreaView>
@@ -149,8 +148,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     padding: 18,
     borderRadius: 10,
-    width: 130,
+    width: 200,
     alignItems: 'center',
+    alignSelf: 'center',
+    height: 80,
     shadowOpacity: 0.1,
     shadowRadius: 5,
     marginHorizontal: 6,
