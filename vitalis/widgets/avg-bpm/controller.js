@@ -6,9 +6,23 @@ angular.module('bpm', ['ideUI', 'ideView'])
             busyText: "Loading...",
         };
 
-        const serviceUrl = "/services/ts/codbex-invoices/widgets/api/InvoiceService.ts/invoiceData";
-        $http.get(serviceUrl)
+        const URL_GET_DATA = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts"
+        $http.get(URL_GET_DATA)
             .then(function (response) {
-                $scope.BPM = response.data;
+                if (Array.isArray(response.data) && response.data.length > 0) {
+                    let total = 0;
+                    let count = 0;
+
+                    response.data.forEach(function (obj) {
+                        if (obj.HeartRate != null && !isNaN(obj.HeartRate)) {
+                            total += Number(obj.HeartRate);
+                            count++;
+                        }
+                    });
+
+                    $scope.HeartRate = count > 0 ? (total / count) : 0;
+                } else {
+                    $scope.HeartRate = 0;
+                }
             });
     }]);

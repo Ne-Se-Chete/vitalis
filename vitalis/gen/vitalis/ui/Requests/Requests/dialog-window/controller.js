@@ -27,6 +27,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			$scope.entity = params.entity;
 			$scope.selectedMainEntityKey = params.selectedMainEntityKey;
 			$scope.selectedMainEntityId = params.selectedMainEntityId;
+			$scope.optionsStatus = params.optionsStatus;
 			$scope.optionsMeasurements = params.optionsMeasurements;
 		}
 
@@ -59,6 +60,18 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		};
 
+		$scope.serviceStatus = "/services/ts/vitalis/gen/vitalis/api/Settings/RequestStatusService.ts";
+		
+		$scope.optionsStatus = [];
+		
+		$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/RequestStatusService.ts").then(function (response) {
+			$scope.optionsStatus = response.data.map(e => {
+				return {
+					value: e.Id,
+					text: e.Name
+				}
+			});
+		});
 		$scope.serviceMeasurements = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts";
 		
 		$scope.optionsMeasurements = [];
