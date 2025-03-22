@@ -119,8 +119,8 @@ class MeasurementsService {
     }
 
     private validateEntity(entity: any): void {
-        if (entity.ECG?.length > 255) {
-            throw new ValidationError(`The 'ECG' exceeds the maximum length of [255] characters`);
+        if (entity.ECG?.length > 20000) {
+            throw new ValidationError(`The 'ECG' exceeds the maximum length of [20000] characters`);
         }
         for (const next of validationModules) {
             next.validate(entity);
