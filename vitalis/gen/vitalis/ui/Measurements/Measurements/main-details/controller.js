@@ -1,9 +1,9 @@
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
-		messageHubProvider.eventIdPrefix = 'vitalis.Doctor.Doctor';
+		messageHubProvider.eventIdPrefix = 'vitalis.Measurements.Measurements';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/ts/vitalis/gen/vitalis/api/Doctor/DoctorService.ts";
+		entityApiProvider.baseUrl = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts";
 	}])
 	.controller('PageController', ['$scope',  '$http', 'Extensions', 'messageHub', 'entityApi', function ($scope,  $http, Extensions, messageHub, entityApi) {
 
@@ -12,15 +12,15 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			details: {},
 		};
 		$scope.formHeaders = {
-			select: "Doctor Details",
-			create: "Create Doctor",
-			update: "Update Doctor"
+			select: "Measurements Details",
+			create: "Create Measurements",
+			update: "Update Measurements"
 		};
 		$scope.action = 'select';
 
 		//-----------------Custom Actions-------------------//
 		Extensions.get('dialogWindow', 'vitalis-custom-action').then(function (response) {
-			$scope.entityActions = response.filter(e => e.perspective === "Doctor" && e.view === "Doctor" && e.type === "entity");
+			$scope.entityActions = response.filter(e => e.perspective === "Measurements" && e.view === "Measurements" && e.type === "entity");
 		});
 
 		$scope.triggerEntityAction = function (action) {
@@ -40,15 +40,18 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHub.onDidReceiveMessage("clearDetails", function (msg) {
 			$scope.$apply(function () {
 				$scope.entity = {};
-				$scope.optionsGender = [];
+				$scope.optionsPatient = [];
 				$scope.action = 'select';
 			});
 		});
 
 		messageHub.onDidReceiveMessage("entitySelected", function (msg) {
 			$scope.$apply(function () {
+				if (msg.data.entity.Timestamp) {
+					msg.data.entity.Timestamp = new Date(msg.data.entity.Timestamp);
+				}
 				$scope.entity = msg.data.entity;
-				$scope.optionsGender = msg.data.optionsGender;
+				$scope.optionsPatient = msg.data.optionsPatient;
 				$scope.action = 'select';
 			});
 		});
@@ -56,44 +59,47 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHub.onDidReceiveMessage("createEntity", function (msg) {
 			$scope.$apply(function () {
 				$scope.entity = {};
-				$scope.optionsGender = msg.data.optionsGender;
+				$scope.optionsPatient = msg.data.optionsPatient;
 				$scope.action = 'create';
 			});
 		});
 
 		messageHub.onDidReceiveMessage("updateEntity", function (msg) {
 			$scope.$apply(function () {
+				if (msg.data.entity.Timestamp) {
+					msg.data.entity.Timestamp = new Date(msg.data.entity.Timestamp);
+				}
 				$scope.entity = msg.data.entity;
-				$scope.optionsGender = msg.data.optionsGender;
+				$scope.optionsPatient = msg.data.optionsPatient;
 				$scope.action = 'update';
 			});
 		});
 
-		$scope.serviceGender = "/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts";
+		$scope.servicePatient = "/services/ts/vitalis/gen/vitalis/api/Patient/PatientService.ts";
 
 		//-----------------Events-------------------//
 
 		$scope.create = function () {
 			entityApi.create($scope.entity).then(function (response) {
 				if (response.status != 201) {
-					messageHub.showAlertError("Doctor", `Unable to create Doctor: '${response.message}'`);
+					messageHub.showAlertError("Measurements", `Unable to create Measurements: '${response.message}'`);
 					return;
 				}
 				messageHub.postMessage("entityCreated", response.data);
 				messageHub.postMessage("clearDetails", response.data);
-				messageHub.showAlertSuccess("Doctor", "Doctor successfully created");
+				messageHub.showAlertSuccess("Measurements", "Measurements successfully created");
 			});
 		};
 
 		$scope.update = function () {
 			entityApi.update($scope.entity.Id, $scope.entity).then(function (response) {
 				if (response.status != 200) {
-					messageHub.showAlertError("Doctor", `Unable to update Doctor: '${response.message}'`);
+					messageHub.showAlertError("Measurements", `Unable to update Measurements: '${response.message}'`);
 					return;
 				}
 				messageHub.postMessage("entityUpdated", response.data);
 				messageHub.postMessage("clearDetails", response.data);
-				messageHub.showAlertSuccess("Doctor", "Doctor successfully updated");
+				messageHub.showAlertSuccess("Measurements", "Measurements successfully updated");
 			});
 		};
 
@@ -103,8 +109,8 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		
 		//-----------------Dialogs-------------------//
 		
-		$scope.createGender = function () {
-			messageHub.showDialogWindow("Gender-details", {
+		$scope.createPatient = function () {
+			messageHub.showDialogWindow("Patient-details", {
 				action: "create",
 				entity: {},
 			}, null, false);
@@ -116,10 +122,10 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 
 		//----------------Dropdowns-----------------//
 
-		$scope.refreshGender = function () {
-			$scope.optionsGender = [];
-			$http.get("/services/ts/vitalis/gen/vitalis/api/Settings/GenderService.ts").then(function (response) {
-				$scope.optionsGender = response.data.map(e => {
+		$scope.refreshPatient = function () {
+			$scope.optionsPatient = [];
+			$http.get("/services/ts/vitalis/gen/vitalis/api/Patient/PatientService.ts").then(function (response) {
+				$scope.optionsPatient = response.data.map(e => {
 					return {
 						value: e.Id,
 						text: e.Name
