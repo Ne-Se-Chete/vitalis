@@ -873,7 +873,7 @@
           "inputRule": ""
         },
         {
-          "dataLength": "255",
+          "dataLength": "20000",
           "dataName": "MEASUREMENTS_ECG",
           "dataNullable": true,
           "dataType": "VARCHAR",
@@ -881,7 +881,7 @@
           "name": "ECG",
           "tooltip": "",
           "widgetIsMajor": true,
-          "widgetLength": "20",
+          "widgetLength": "20000",
           "widgetSize": "",
           "widgetType": "TEXTBOX",
           "dataNotNull": false,
@@ -895,7 +895,7 @@
           "dataTypeJava": "string",
           "dataTypeTypescript": "string",
           "minLength": 0,
-          "maxLength": 20,
+          "maxLength": 20000,
           "inputRule": ""
         },
         {
