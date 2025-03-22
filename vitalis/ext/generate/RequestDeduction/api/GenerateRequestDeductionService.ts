@@ -1,4 +1,4 @@
-import { Controller, Put, response } from "sdk/http";
+import { Controller, Put } from "sdk/http";
 import { tasks } from "sdk/bpm";
 import { user } from "sdk/security";
 
@@ -10,8 +10,6 @@ class GenerateRequestDeductionService {
         const processId = ctx.pathParameters.id;
         this.completeTask(processId, true);
 
-        // response.setStatus(response.OK);
-        // response.json({ "message": "Request Approved" })
         return { "message": "Request Approved" };
     }
 
@@ -20,8 +18,6 @@ class GenerateRequestDeductionService {
         const processId = ctx.pathParameters.id;
         this.completeTask(processId, false);
 
-        // response.setStatus(response.OK);
-        // response.json({ "message": "Request Denied" })
         return { "message": "Request Denied" };
     }
 
