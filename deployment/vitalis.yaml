@@ -233,7 +233,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mail-backend-secret
-                  key MAIL_BACKEND_SECRET
+                  key: MAIL_BACKEND_SECRET
             - name: DIRIGIBLE_MAIL_TRANSPORT_PROTOCOL
               value: smtps
             - name: DIRIGIBLE_MAIL_SMTPS_HOST
