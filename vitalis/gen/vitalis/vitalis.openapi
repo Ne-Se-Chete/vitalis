@@ -3029,7 +3029,7 @@ components:
         ECG:
           type: string
           minLength: 0
-          maxLength: 255
+          maxLength: 20000
         BloodOxidation:
           type: number
           format: double
@@ -3083,13 +3083,13 @@ components:
                   oneOf:
                     - type: string
                       minLength: 0
-                      maxLength: 255
+                      maxLength: 20000
                     - type: array
                       items:
                         type: string
                         format: double
                         minLength: 0
-                        maxLength: 255
+                        maxLength: 20000
                 BloodOxidation:
                   oneOf:
                     - type: number
@@ -3147,13 +3147,13 @@ components:
                   oneOf:
                     - type: string
                       minLength: 0
-                      maxLength: 255
+                      maxLength: 20000
                     - type: array
                       items:
                         type: string
                         format: double
                         minLength: 0
-                        maxLength: 255
+                        maxLength: 20000
                 BloodOxidation:
                   oneOf:
                     - type: number
@@ -3181,7 +3181,7 @@ components:
                 ECG:
                   type: string
                   minLength: 0
-                  maxLength: 255
+                  maxLength: 20000
                 BloodOxidation:
                 HeartRate:
             greaterThan:
@@ -3203,7 +3203,7 @@ components:
                 ECG:
                   type: string
                   minLength: 0
-                  maxLength: 255
+                  maxLength: 20000
                 BloodOxidation:
                   type: number
                   format: double
@@ -3229,7 +3229,7 @@ components:
                 ECG:
                   type: string
                   minLength: 0
-                  maxLength: 255
+                  maxLength: 20000
                 BloodOxidation:
                   type: number
                   format: double
@@ -3255,7 +3255,7 @@ components:
                 ECG:
                   type: string
                   minLength: 0
-                  maxLength: 255
+                  maxLength: 20000
                 BloodOxidation:
                   type: number
                   format: double
@@ -3281,7 +3281,7 @@ components:
                 ECG:
                   type: string
                   minLength: 0
-                  maxLength: 255
+                  maxLength: 20000
                 BloodOxidation:
                   type: number
                   format: double
