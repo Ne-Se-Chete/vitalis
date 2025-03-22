@@ -166,6 +166,8 @@ spec:
               value: https://keycloak.vitalis.nesechete.com
             - name: KC_PROXY
               value: edge
+            - name: KC_FEATURES
+              value: preview
 ---
 apiVersion: v1
 kind: Service
@@ -233,7 +235,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mail-backend-secret
-                  key: MAIL_BACKEND_SECRET
+                  key: MAIL_CLIENT_SECRET
             - name: DIRIGIBLE_MAIL_TRANSPORT_PROTOCOL
               value: smtps
             - name: DIRIGIBLE_MAIL_SMTPS_HOST
