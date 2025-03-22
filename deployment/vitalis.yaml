@@ -166,8 +166,6 @@ spec:
               value: https://keycloak.vitalis.nesechete.com
             - name: KC_PROXY
               value: edge
-            - name KC_FEATURES
-              value: preview
 ---
 apiVersion: v1
 kind: Service
@@ -229,6 +227,23 @@ spec:
               value: vitalis
             - name: DIRIGIBLE_DATABASE_DATASOURCE_NAME_DEFAULT
               value: PostgreSQL
+            - name: DIRIGIBLE_MAIL_USERNAME
+              value: apikey
+            - name: DIRIGIBLE_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-backend-secret
+                  key MAIL_BACKEND_SECRET
+            - name: DIRIGIBLE_MAIL_TRANSPORT_PROTOCOL
+              value: smtps
+            - name: DIRIGIBLE_MAIL_SMTPS_HOST
+              value: smtp.sendgrid.net
+            - name: DIRIGIBLE_MAIL_SMTPS_PORT
+              value: "465"
+            - name: DIRIGIBLE_MAIL_SMTPS_AUTH
+              value: "true"
+            - name: LEAVE_REQUEST_APP_FROM_EMAIL
+              value: enestech6@gmail.com
 ---
 apiVersion: v1
 kind: Service
