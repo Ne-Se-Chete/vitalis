@@ -11,19 +11,28 @@ app.controller('templateController', ['$scope', '$http', 'ViewParameters', 'mess
     $scope.showDialog = true;
     $scope.description = "";
 
-    const measurementsUrl = `/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRquestDeductionService.ts/measurementsData/${measurementsId}`;
-    const requestUrl = `/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRquestDeductionService.ts/request/`;
-    const approvedUrl = `${requestUrl}${processId}/approve`;
-    const deniedUrl = `${requestUrl}${processId}/deny`;
+    const measurementsUrl = "/services/ts/vitalis/gen/vitalis/api/Measurements/MeasurementsService.ts/" + measurementsId;
+    const patientNameUrl = "/services/ts/vitalis/gen/vitalis/api/Patient/PatientService.ts/";
+    const approvedUrl = `/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRequestDeductionService.ts/requests/${processId}/approve`;
+    const deniedUrl = `/services/ts/vitalis/ext/generate/RequestDeduction/api/GenerateRequestDeductionService.ts/requests/${processId}/deny`;
     const requestCreateUrl = "/services/ts/vitalis/gen/vitalis/api/Requests/RequestsService.ts";
 
     $http.get(measurementsUrl)
-        .then(function (response) {
+        .then(response => {
             $scope.measurementsData = response.data;
+
+            $http.get(patientNameUrl + $scope.measurementsData.Patient)
+                .then(response => {
+                    $scope.patientName = response.data.Name;
+                })
+                .catch(function (error) {
+                    console.error("Error fetching measurements:", error);
+                });
         })
         .catch(function (error) {
             console.error("Error fetching measurements:", error);
         });
+
 
     $scope.submitRequest = function (status) {
         let actionUrl = status === 1 ? approvedUrl : deniedUrl;
