@@ -1,0 +1,11 @@
+  The file is in the program because:
+    Entry point of type library '../modules/types' specified in compilerOptions
+
+  [96mtsconfig.json[0m:[93m20[0m:[93m13[0m
+    [7m20[0m             "../modules/types"
+    [7m  [0m [96m            ~~~~~~~~~~~~~~~~~~[0m
+    File is entry point of type library specified here.
+
+
+Found 1 error.
+

@@ -31,13 +31,14 @@ app.controller('templateController', ['$scope', '$http', 'ViewParameters', funct
                 ${JSON.stringify(response_measurments.data)}
             `
 
-            $http.get("http://localhost:8080/services/ts/vitalis/ext/view/api/APIService.ts")
+            $http.get("/services/ts/vitalis/ext/view/api/APIService.ts")
                 .then(function (response_api_key) {
+
 
                     $http.post('https://api.openai.com/v1/chat/completions', getRequestData(ai_prompt, 200), {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + response_api_key
+                            'Authorization': 'Bearer ' + response_api_key.data.replace("\n", "")
                         }
                     }).then(function (response_ai) {
                         $scope.aiResponse = response_ai.data.choices[0].message.content;
